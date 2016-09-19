@@ -1,4 +1,4 @@
-<h3>Design Milestone</h3>
+#Design Milestone
 
 <h4>Problem Statement</h4>
 There is a friction involved in allocating tasks to software developers when working with any project involving multiple members. Why is task allocation a problem? Here are some of the common challenges that hinder project management: 
