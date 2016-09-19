@@ -22,4 +22,9 @@ A bot is a good solution for several reasons: a bot can automatically process ba
 
 ### Architecture Design 
 
+Front-end: Slack
+
+Back-end: Github API calls, Slack API calls, Machine Learning, Github 
+
+
 ### Additional Patterns 
