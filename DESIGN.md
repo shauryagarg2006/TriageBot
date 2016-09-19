@@ -31,20 +31,3 @@ A bot is a good solution for several reasons: a bot can automatically process ba
 <h4> Architecture Design </h4>
 
 <h4> Additional Patterns </h4>
-
-
-<h4> Brainstorming: </h4>
-
-Slack + Git for Project Management (Triage):
-
-<ul> <li> Keep track of milestones and remind developers about the deadlines </li>
-<li> Give warnings about unassigned pull requests </li>
-<li> Assign issues/pull-requests for developers </li>
-<li> Give estimate about whether an additional feature is doable within time frame </li>
-<li> If a developer leaves project, be able to reassign issues/pull-requests/branches etc. </li>
-<li> Remove stale or unused branches </li> </ul>
-
-Issues:
-
-<ul> <li> Persistent storage of high level details: developer absence of leave etc. </li>
-</ul>
