@@ -1,17 +1,15 @@
 #Design Milestone
 
-<h4>Problem Statement</h4>
+##Problem Statement
+
 There is a friction involved in allocating tasks to software developers when working with any project involving multiple members. Why is task allocation a problem? Here are some of the common challenges that hinder project management: 
 
-<ul> <li> Determining the next available developer who can continue a task or start a new one </li>
-<li> Determining the holistic developer’s skills easily </li>
-<li> Determining the level of a difficulty of tasks to assign to an appropriate developer based on their skill level and expertise</li>
-<li> Reassigning an old task to the next available developer so they can resume the task quickly</li>
-<li> Making sure all developers have at least one task to do at all times to keep the project moving (easy)</li>
-<li> Give the developer tasks sorted by priority according to the current sprint deadline (relatively easy)</li>
-</ul>
+  *A lot of time that is wasted in manually browsing and delegating the tasks appropriate to the developer team members.
+  *Reassigning a task to the next available developer so they can resume the task quickly
+  *Making sure all developers have at least one task to do at all times to keep the project moving (easy)
+  *Give the developer tasks sorted by priority according to the current sprint deadline (relatively easy)
 
-These challenges need to be addressed so that software developers can work efficiently and effectively. There is a lot of time that is wasted in manually browsing and delegating the tasks appropriate to the developer team members.  
+These challenges need to be addressed so that software developers can work efficiently and effectively.
 
 <h4> Bot Description </h4>
 The bot is designed to solve the challenges that were listed above in order to allocate tasks efficiently and appropriately to the developers that can resolve the issues or complete the tasks in a reasonable time:   
