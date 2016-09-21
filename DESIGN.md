@@ -4,10 +4,10 @@
 
 There is a friction involved in allocating tasks to software developers when working with any project involving multiple members. Why is task allocation a problem? Here are some of the common challenges that hinder project management: 
 
-  *A lot of time that is wasted in manually browsing and delegating the tasks appropriate to the developer team members.
-  *Reassigning a task to the next available developer so they can resume the task quickly
-  *Making sure all developers have at least one task to do at all times to keep the project moving (easy)
-  *Give the developer tasks sorted by priority according to the current sprint deadline (relatively easy)
+  *A lot of time that is wasted in manually browsing and delegating the tasks appropriate to the developer team members.*
+  *Reassigning a task to the next available developer so they can resume the task quickly*
+  *Making sure all developers have at least one task to do at all times to keep the project moving (easy)*
+  *Give the developer tasks sorted by priority according to the current sprint deadline (relatively easy)*
 
 These challenges need to be addressed so that software developers can work efficiently and effectively.
 
