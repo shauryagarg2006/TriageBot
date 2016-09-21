@@ -31,11 +31,19 @@ Interactive chat:
 - Give me deadlines
 - What are the issues assigned xyz?
 - Is there are any work for me?
+- I need help on this issue [blah blah]
 
 Notifications:
 - You have an issue with a deadline approaching.
 - You have been assigned an issue, can you work on this?
 - This issue [blah blah] has been updated.
+
+Constraints or guidelines that should be established in building software for your architecture:
+- The act of closing an issue means they solved it
+- The type of priority of issues include high, medium and low 
+- Priority level of issues is calculated on deadlines and git issue’s label(s)
+- There are fixed number of labels.
+- Each individual issue is assigned appropriate label(s) by the developer(s).
 
 
 
