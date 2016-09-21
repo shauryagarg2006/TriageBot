@@ -21,9 +21,9 @@ A bot is a good solution for several reasons: a bot can automatically process ba
 ### Design Sketches 
 Mock a chat with Bash’s fake profile image with some common commands:
 
--Assign issue to developer
--Get back list of issues sorted by priority
--Talk to Dr.Parnin regarding wireframe mockup.
+- Assign issue to developer
+- Get back list of issues sorted by priority
+- Talk to Dr.Parnin regarding wireframe mockup.
 
 #####Storyboard: 
 
