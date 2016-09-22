@@ -27,16 +27,27 @@ Mock a chat with Bash’s fake profile image with some common commands:
 
 #####Storyboard: 
 
-Interactive chat:
-- Give me deadlines
-- What are the issues assigned xyz?
-- Is there are any work for me?
-- I need help on this issue [blah blah]
+- Developers can assign issues to themselves.
 
-Notifications:
-- You have an issue with a deadline approaching.
-- You have been assigned an issue, can you work on this?
-- This issue [blah blah] has been updated.
+<img src="assignToMe.png"/>
+
+- Developers can also assign issues to other developers.
+
+<img src="assignToDavid.png"/>
+
+- TriageBot will also push notifications to the developer with helpful reminders of the deadline for issues. Here, the bot is reminding the developer of deadlines for the issues they're working on.
+
+<img src="deadlineReminder.png"/>
+
+- Developers can also ask TriageBot for the deadlines of either their issues or other developers. This helps the developer guage the issues they need to get done, or what other developers are working on before assigning them.
+
+<img src="giveMeDeadlines.png"/>
+
+### Architecture Design 
+
+Front-end: Slack
+
+Back-end: Github API, Botkit API, Machine Learning, Github 
 
 Constraints or guidelines that should be established in building software for your architecture:
 - The act of closing an issue means they solved it
@@ -44,14 +55,5 @@ Constraints or guidelines that should be established in building software for yo
 - Priority level of issues is calculated on deadlines and git issue’s label(s)
 - There are fixed number of labels.
 - Each individual issue is assigned appropriate label(s) by the developer(s).
-
-
-
-### Architecture Design 
-
-Front-end: Slack
-
-Back-end: Github API calls, Slack API calls, Machine Learning, Github 
-
 
 ### Additional Patterns 
