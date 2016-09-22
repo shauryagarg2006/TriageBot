@@ -32,7 +32,7 @@ The bot would respond with a confirmation that the chosen issue was assigned to 
 
 <img src="assignToDavid.png"/>
 
-- TriageBot will also push notifications to the developer with helpful reminders of the deadline for issues. Here, the bot is reminding the developer of deadlines for the issues they're working on.
+- TriageBot will also push notifications to the developer with helpful reminders of the deadline for issues. Everyday, the bot can look into the database of issues and based on the timeline of those issues, it can remind the developers at an appropriate time so not too early or not too late with an appropriate frequency. The developer has the option to assign issues to other developers in the team in case the developer need helps with the work that they currently working on or wanting to delegate tasks in the project that they working together. Here, the developer requested to know about the issues that were assigned to a specific developer. The bot pulled the information of issues assigned to that developer and responded. The developer also requested issues to be assigned to another developer, the bot shall delegate those issues to that developer but they have an option to review the issues before accepting the assignment request. 
 
 <img src="deadlineReminder.png"/>
 
