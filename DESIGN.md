@@ -42,19 +42,6 @@ A bot is a good solution for several reasons: a bot can automatically process ba
 
 <img src="Architecture Diagram.png"/>
 
-Front-end: Slack UI
-
-Back-end: Github API, Botkit API, Machine Learning, Github 
-
-Constraints or guidelines that should be established in building software for your architecture:
-- The act of closing an issue means they solved it
-- The type of priority of issues include high, medium and low 
-- Priority level of issues is calculated on deadlines and git issue’s label(s)
-- There are fixed number of labels.
-- Each individual issue is assigned appropriate label(s) by the developer(s).
-
-### Additional Patterns 
-
 The bot’s architecture best represents a repository architecture pattern, where the data for developers’ past issues and issue information are being pulled more often than pushed to Github. The frontend of the bot architecture is the Slack UI, which will be used by the developers to communicate and assign issues to each other. Node.js will serve as the backend, making use of a third-party library called BotKit to listen to and process commands issued by the developer and to push notifications and reminders like upcoming deadlines. 
 
 
@@ -62,3 +49,11 @@ The Github REST API is the API Gateway between Node.js and the Github service’
 
 
 The initial configuration required by the application would be stored in the xml and will be loaded when the application starts up. 
+
+
+Constraints or guidelines that should be established in building software for your architecture:
+- The act of closing an issue means they solved it
+- The type of priority of issues include high, medium and low 
+- Priority level of issues is calculated on deadlines and git issue’s label(s)
+- There are fixed number of labels.
+- Each individual issue is assigned appropriate label(s) by the developer(s).
