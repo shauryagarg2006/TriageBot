@@ -22,7 +22,7 @@ A bot is a good solution for several reasons: a bot can automatically process ba
 
 #####Storyboard: 
 
-- Developers can look for open issues and assign them to themselves.
+- Developers can look for open issues and assign them to themselves. The issues will be linked to the respective Github issues.
 
 <img src="assignToMe.png"/>
 
