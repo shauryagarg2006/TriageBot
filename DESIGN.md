@@ -22,7 +22,9 @@ A bot is a good solution for several reasons: a bot can automatically process ba
 
 #####Storyboard: 
 
-- Developers can look for open issues and assign them to themselves. The issues will be linked to the respective Github issues.
+- Developers can look for open issues and assign them to themselves. The issues will be linked to the respective Github issues.The developer can ask the bot for open issues to work on. He’d use natural language, and the bot would look for keywords like “issue” or “work”. It then understands that the developer is asking for the open issues that fit his expertise.
+The bot would then list the issues for the developer and wait for a response. The developer would respond with a phrase that indicates which issue he wants to work on. He would say something like, “I want the first one” or “number 1”. 
+The bot would respond with a confirmation that the chosen issue was assigned to that developer.
 
 <img src="assignToMe.png"/>
 
