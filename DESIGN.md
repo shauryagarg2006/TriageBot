@@ -27,11 +27,11 @@ Mock a chat with Bash’s fake profile image with some common commands:
 
 #####Storyboard: 
 
-- Developers can assign issues to themselves.
+- Developers can look for open issues and assign them to themselves.
 
 <img src="assignToMe.png"/>
 
-- Developers can also assign issues to other developers.
+- Developers can also assign issues to other developers. Before they start assigning issues, they can also ask TriageBot what the assignee is currently working on.
 
 <img src="assignToDavid.png"/>
 
@@ -39,13 +39,13 @@ Mock a chat with Bash’s fake profile image with some common commands:
 
 <img src="deadlineReminder.png"/>
 
-- Developers can also ask TriageBot for the deadlines of either their issues or other developers. This helps the developer guage the issues they need to get done, or what other developers are working on before assigning them.
+- Developers can also ask TriageBot for the deadlines of either their issues or other developers. This helps the developer guage the issues they need to get done, or what other developers are working on before assigning them issues.
 
 <img src="giveMeDeadlines.png"/>
 
 ### Architecture Design 
 
-Front-end: Slack
+Front-end: Slack UI
 
 Back-end: Github API, Botkit API, Machine Learning, Github 
 
