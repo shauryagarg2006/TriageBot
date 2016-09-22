@@ -2,24 +2,26 @@
 
 ###Problem Statement
 
-There is a friction involved in allocating tasks to software developers when working with any project involving multiple members. Why is task allocation a problem? Here are some of the common challenges that hinder project management: 
+There is a lot of friction involved in allocating tasks to software developers when working with any project involving multiple members. Why is task allocation a problem? Here are some of the common challenges that afflict software development: 
 
-  - A lot of time that is wasted in manually browsing and delegating the tasks appropriate to the developer team members.
+  - Having to manually browse through and delegate the tasks appropriate to the developer
   - Reassigning a task to the next available developer so they can resume the task quickly
-  - Making sure all developers have at least one task to do at all times to keep the project moving (easy)
-  - Give the developer tasks sorted by priority according to the current sprint deadline (relatively easy)
+  - Making sure all developers have at least one task to do at all times to keep the project moving
+  - Giving the developer tasks sorted by priority according to the current sprint deadline
 
 These challenges need to be addressed so that software developers can work efficiently and effectively.
 
 ### Bot Description 
 
-The bot is designed to solve the challenges that were listed above in order to allocate tasks efficiently and appropriately to the developers that can resolve the issues or complete the tasks in a reasonable time. To reduce time wasted in manually looking up issues and assigning them to the appropriate developers, the bot will allow the developer to fetch a list of issues sorted by priority. Reassigning a task to the next available developer will also be easy since the bot will have a list of developers who haven’t been assigned any issues. This will also takes care of the problem of keeping developers productive by having at least one task to do at all times. The bot will ask whether they can take on the issue before assigning it. Developers can then accept or reject the issue with a reason so the assigner can find someone else. For maximum productivity the bot will be making sure developers are working on higher priority issues for the current sprint, and according to the kinds of issues that they are skilled at solving; this will be based on the history of the types of issues that they have closed out. The bot will also provide a functionality to match the issues and the developers based on their past experiences.
+TriageBot is designed to solve the challenges that were listed above in order to allocate tasks efficiently and appropriately to the developers so tasks are prioritized properly and completed in a reasonable time. To reduce time wasted in manually looking up issues and assigning them to the appropriate developers, the bot will allow the developer to fetch a list of issues sorted by priority with one command. Reassigning a task to the next available developer will also be easy since the bot can provide a list of developers who haven’t been assigned any issues. This will take care of the problem of keeping developers productive by having them work on at least one task at all times. If a developer chooses to delegate a task to another developer, the bot will ask whether the assignee whether they can take on the issue before assigning it. Developers can then accept or reject the issue with a reason so the assigner can find someone else. For maximum productivity, the bot will also be making sure developers are working on higher priority issues for the current sprint, and according to the kinds of issues that they are skilled at solving. The bot will match the issues and the developers based on the history of the types of issues that they have closed out
 
-A bot is a good solution for several reasons: a bot can automatically process background tasks that are tedious for the developers; a bot can converse with the developers to do things step by step in real time, which provides the developer flexibility in assigning tasks or taking on tasks proactively; it’s a natural interface than simply running scripts on a terminal which provides an easier way to execute commands and makes them more memorable. This bot would best fit into the DevOps bot category since it is handling common developer tasks.
+A bot is a good solution for several reasons: a bot can automatically process background tasks that are tedious for the developers like gathering open issues and sorting them by priority; a bot can converse with the developers to do things step by step in real time, which provides the developer flexibility in assigning tasks or taking on tasks proactively; a bot also serves as a natural interface for developers, which facilitates a conversation based on simple commands as opposed to execution of potentially complicated and unmemorable commands on a terminal. On top of these advantages, a bot that integrates with a popular communication tool like Slack can be very helpful since the developers are already using Slack for most of their communication and they won't have to navigate away from Slack to Github to assign issues and check on deadlines or milestones; developers can make use of the bot to handle task allocation right where the communication is already taking place. For this reason, TriageBot is going to be a Slack bot. TriageBot would best fit into the DevOps bot category since it is assisting the software development process by tackling the problem of task allocation.
 
 ### Design Sketches 
 
 #####Wireframe:
+
+Below is a simple wireframe of the Slack UI which is where the developer will interact with TriageBot.
 
 <img src="botWireframe.png"/>
 
