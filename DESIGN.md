@@ -40,6 +40,8 @@ A bot is a good solution for several reasons: a bot can automatically process ba
 
 ### Architecture Design 
 
+<img src="Architecture Diagram.png"/>
+
 Front-end: Slack UI
 
 Back-end: Github API, Botkit API, Machine Learning, Github 
