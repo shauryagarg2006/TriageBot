@@ -32,7 +32,7 @@ Below is a simple wireframe of the Slack UI which is where the developer will in
 - Developers can look for open issues and assign them to themselves. The issues will be linked to the respective Github issues. The developer can ask the bot for open issues to work on. He’d use natural language, and the bot would look for keywords like “issue” or “work”. It then understands that the developer is asking for the open issues that fit his expertise.
 The bot would then list the issues for the developer and wait for a response. The developer would respond with a phrase that indicates which issue he wants to work on. He would say something like, “I want the first one” or “number 1”.
 
-<img src="images/assignToMe.png" width="50%" height="50%"/>
+<img src="images/assignToMe.png" width="60%" height="60%"/>
 
 - Developers can also assign issues to other developers in the team in case they need help with the work that they're currently working on or wanting to delegate tasks to others. Before they start assigning issues, they can also ask TriageBot the issues that the assignee is currently working on to which the bot will respond with a list of issues assigned to that developer. When the developer requests issues to be assignee, the assignee has an option to review the issues before accepting or rejecting the assignment.
 
