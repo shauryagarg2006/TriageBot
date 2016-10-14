@@ -52,7 +52,9 @@ The bot would then list the issues for the developer and wait for a response. Th
 
 The bot’s architecture best represents a repository architecture pattern, where the data for developers’ past issues and issue information are being pulled more often than pushed to Github. The frontend of the bot architecture is the Slack UI, which will be used by the developers to communicate and assign issues to each other. Node.js will serve as the backend, making use of a third-party library called BotKit to listen to and process commands issued by the developer and to push notifications and reminders like upcoming deadlines.
 
-The Github REST API is the API Gateway between Node.js and the Github service’s database where the repository for the project is stored. The Node.js script will call the Github REST API to gather information about the open issues and the history of solved issues for the developers and run an algorithm on them and come up with the best possible match.
+The Github REST API is the API Gateway between Node.js and the Github service’s database where the repository for the project is stored. The Node.js script will call the Github REST API to gather information about the open issues and the history of solved issues for the developers and run an algorithm on them and come up with the best possible match.  
+
+For the messages between the bot and individuals, it would be direct messages. The individual can directly message the TriageBot to request issues, check statuses of issues, and other work. The TriageBot with Node.js shall then parse the message and keyword search to find appropriate information in the github database, come down to a suitable decision, and fetch arguments for our function call.  
 
 The initial configuration required by the application would be stored in the xml and will be loaded when the application starts up.
 
