@@ -64,6 +64,6 @@ Constraints or guidelines that should be established in building software for yo
 - Each individual issue is assigned appropriate label(s) by the developer(s).
 
 ###Additional Design Pattern:
-####Adapter Pattern :
+#####Adapter Pattern :
 It makes one interface compatible with the other or we can that it works as a bridge between two incompatible interfaces.The adapter class will have an instance of the adaptee class and will map its method to the target interface. We are in a way mapping the GitHub Api with the with the chatbots messaging interface. The user will be typing the command/message which will then be converted to a correct set of Api calls to GitHub.
 
