@@ -1,9 +1,9 @@
 var SlackBot = require('slackbots');
 var botkit = require("botkit")
-var Forecast = require('forecast.io');
 var options = {APIKey:''};
-var forecast = new Forecast(options);
-var childProcess = require("child_process");
+var nock = require("nock");
+var _ = require("underscore");
+var github = require("./github.js");
 
 // create a bot
 var bot = new SlackBot({
