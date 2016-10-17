@@ -3,9 +3,8 @@ var _ = require("underscore");
 var request = require("request");
 var querystring = require('querystring');
 
-var token = "token " + "YOUR TOKEN";
-var urlRoot = "https://api.github.com";
-
+var token = "token " + process.env.GTOKEN;
+var urlRoot = "https://github.ncsu.edu/api/v3";
 function getRepos(userName)
 {
 	var options = {
@@ -24,6 +23,7 @@ function getRepos(userName)
 		{
 			var repos = JSON.parse(body);
 			resolve(repos);
+			console.log(repos);
 		});
 	});
 }
