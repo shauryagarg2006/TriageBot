@@ -63,7 +63,7 @@ This bot demonstrates many of the core features of Botkit:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 //var gitapi = require("../../../REST-SELENIUM/REST/./script.js")
-var main = require("./main.js")
+var main = require("../../../Mocking/./main.js")
 var repo = "DeveloperTriage";
 var Promise = require("bluebird");
 var _ = require("underscore");
@@ -72,8 +72,7 @@ if (!process.env.token) {
     console.log('Error: Specify token in environment');
     process.exit(1);
 }
-
-var Botkit = require('./lib/Botkit.js');
+var Botkit = require('botkit');
 var os = require('os');
 
 var controller = Botkit.slackbot({
