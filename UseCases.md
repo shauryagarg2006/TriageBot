@@ -1,6 +1,6 @@
 # Use Cases 
 
-###1/ Give me list of open issues to work
+###1. Give me list of open issues to work
 
   **A. Preconditions:** <br /> 
   User must have Slack/Github API tokens on their system.
@@ -16,7 +16,7 @@
   **D. Alternative Flow(s):** <br /> 
     - [A1] No open issues available to work on.
 
-###2/Use Case: Give me this person’s(name of person) deadlines
+###2. Use Case: Give me this person’s(name of person) deadlines
 
   **A. Preconditions:** <br /> 
     - User must have Slack/Github API tokens on their system. <br /> 
@@ -33,9 +33,7 @@
   **D. Alternative Flow:** <br /> 
     - [A1] No open issues assigned  to the person whose name is supplied by the user. In that case bot will simple reply the user has no open issues.
 
-
-
-###3/Use Case: Help me with this issue
+###3. Use Case: Help me with this issue
 
   **A. Preconditions:** <br /> 
     - User must have Slack/Github API tokens on their system.
