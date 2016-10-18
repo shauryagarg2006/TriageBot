@@ -64,7 +64,7 @@ This bot demonstrates many of the core features of Botkit:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 //var gitapi = require("../../../REST-SELENIUM/REST/./script.js")
 var main = require("./main.js")
-var repo = "DeveloperTriage";
+var repo = "TriageBotTesting";
 var Promise = require("bluebird");
 var _ = require("underscore");
 if (!process.env.BOT_TOKEN) {
@@ -99,14 +99,14 @@ controller.hears(['hello', 'hi'], 'direct_message,direct_mention,mention', funct
     controller.storage.users.get(message.user, function(err, user) {
         if (user && user.name) {
             //bot.reply(message, 'Hello ' + user.name + '!!');
-            main.countOpen('maalbash',repo).then(function (results)
+            main.countOpen('hqtu',repo).then(function (results)
             {
                 bot.reply(message, "" + results + "");
             });
             
         } else {
             //bot.reply(message, 'Hello.');
-            main.countOpen('maalbash',repo).then(function (results)
+            main.countOpen('hqtu',repo).then(function (results)
             {
                 bot.reply(message, "" + results + "");
             });
