@@ -2,7 +2,6 @@ var Promise = require("bluebird");
 var _ = require("underscore");
 var request = require("request");
 var querystring = require('querystring');
-
 var token = "token " + process.env.GTOKEN;
 var urlRoot = "https://github.ncsu.edu/api/v3";
 function getRepos(userName)

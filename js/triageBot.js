@@ -67,8 +67,7 @@ var main = require("./main.js")
 var repo = "DeveloperTriage";
 var Promise = require("bluebird");
 var _ = require("underscore");
-
-if (!process.env.token) {
+if (!process.env.BOT_TOKEN) {
     console.log('Error: Specify token in environment');
     process.exit(1);
 }
@@ -80,7 +79,7 @@ var controller = Botkit.slackbot({
 });
 
 var bot = controller.spawn({
-    token: process.env.token
+    token: process.env.BOT_TOKEN
 }).startRTM();
 
 
