@@ -3,10 +3,10 @@
 ###1. Give me list of open issues to work
 
   **A. Preconditions:** <br /> 
-  User must have Slack/Github API tokens on their system.
+   User must have Slack/Github API tokens on their system.
 
   **B. MainFlow:** <br /> 
-  User will request for list of open issues that they can work on. The bot will provide list of issues and the user would select one of them. That issue is assigned to the user now.
+   User will request for list of open issues that they can work on. The bot will provide list of issues and the user would select one of them. That issue is assigned to the user now.
 
   **C. Subflow(s):** <br /> 
     - [S1] User will request for open issues to work.
@@ -23,7 +23,7 @@
     - The name of the person should exist in the repository as a collaborator.
 
   **B. MainFlow:** <br /> 
-  The user will ask for another user’s deadlines. A list of issues sorted with the most short deadline will be showed to the user.
+   The user will ask for another user’s deadlines. A list of issues sorted with the most short deadline will be showed to the user.
 
   **C. Subflow:** <br /> 
     - [S1] Get a list of issues [S2] and then do [S3]
@@ -40,7 +40,7 @@
     - User must have the specified issue assigned to them
 
   **B. Main-Flow:** <br /> 
-  The user will ask for help with an issue assigned to them [S1]. They’ll receive a list of developers who have experience dealing with these types of issues. They can pick one of them [S2], and the bot will send a message to the developer informing them of the user’s need for assistance. [S3]
+   The user will ask for help with an issue assigned to them [S1]. They’ll receive a list of developers who have experience dealing with these types of issues. They can pick one of them [S2], and the bot will send a message to the developer informing them of the user’s need for assistance. [S3]
 
   **C. Sub-Flow(s):**
     - [S1] User will issue a help command with issue # to the bot.
