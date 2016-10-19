@@ -61,10 +61,11 @@ This bot demonstrates many of the core features of Botkit:
 
     -> http://howdy.ai/botkit
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 //var gitapi = require("../../../REST-SELENIUM/REST/./script.js")
 var main = require("./main.js")
 var repo = "TriageBotTesting";
+var repoOwner= "hqtu"
 var Promise = require("bluebird");
 var _ = require("underscore");
 if (!process.env.BOT_TOKEN) {
@@ -101,20 +102,43 @@ controller.hears(['hello', 'hi'], 'direct_message,direct_mention,mention', funct
             //bot.reply(message, 'Hello ' + user.name + '!!');
             main.countOpen('hqtu',repo).then(function (results)
             {
-                bot.reply(message, "" + results + "");
+                var rep =[];
+                rep.push("Hola");
+                rep.push("HYahoo");
+                //bot.reply(message, "" + results + "");
+                bot.reply(message, rep.join('\n'));
             });
             
         } else {
             //bot.reply(message, 'Hello.');
             main.countOpen('hqtu',repo).then(function (results)
-            {
-                bot.reply(message, "" + results + "");
+            { 
+                var rep =[];
+                rep.push("Hola");
+                rep.push("HYahoo");
+                //bot.reply(message, "" + results + "");
+                bot.reply(message, rep.join('\n'));
             });
         }
     });
 });
 
-controller.hears(['call me (.*)', 'my name is (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
+
+controller.hears(['deadlines for (.*)', 'Deadline for (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
+    var name = message.match[1];
+    controller.storage.users.get(message.user, function(err, user) {
+
+        main.getIssuesAssigedToAuser(repoOwner,repo,name).then(function (results)
+        {
+
+            bot.reply(message, results);
+        });
+
+    });
+});
+
+
+controller.hears(['Give me (.*)', 'dead lines of (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
     var name = message.match[1];
     controller.storage.users.get(message.user, function(err, user) {
         if (!user) {
@@ -140,9 +164,9 @@ controller.hears(['what is my name', 'who am i'], 'direct_message,direct_mention
                     convo.say('I do not know your name yet!');
                     convo.ask('What should I call you?', function(response, convo) {
                         convo.ask('You want me to call you `' + response.text + '`?', [
-                            {
-                                pattern: 'yes',
-                                callback: function(response, convo) {
+                        {
+                            pattern: 'yes',
+                            callback: function(response, convo) {
                                     // since no further messages are queued after this,
                                     // the conversation will end naturally with status == 'completed'
                                     convo.next();
@@ -162,39 +186,39 @@ controller.hears(['what is my name', 'who am i'], 'direct_message,direct_mention
                                     convo.next();
                                 }
                             }
-                        ]);
+                            ]);
 
-                        convo.next();
+convo.next();
 
                     }, {'key': 'nickname'}); // store the results in a field called nickname
 
-                    convo.on('end', function(convo) {
-                        if (convo.status == 'completed') {
-                            bot.reply(message, 'OK! I will update my dossier...');
+convo.on('end', function(convo) {
+    if (convo.status == 'completed') {
+        bot.reply(message, 'OK! I will update my dossier...');
 
-                            controller.storage.users.get(message.user, function(err, user) {
-                                if (!user) {
-                                    user = {
-                                        id: message.user,
-                                    };
-                                }
-                                user.name = convo.extractResponse('nickname');
-                                controller.storage.users.save(user, function(err, id) {
-                                    bot.reply(message, 'Got it. I will call you ' + user.name + ' from now on.');
-                                });
-                            });
+        controller.storage.users.get(message.user, function(err, user) {
+            if (!user) {
+                user = {
+                    id: message.user,
+                };
+            }
+            user.name = convo.extractResponse('nickname');
+            controller.storage.users.save(user, function(err, id) {
+                bot.reply(message, 'Got it. I will call you ' + user.name + ' from now on.');
+            });
+        });
 
 
 
-                        } else {
+    } else {
                             // this happens if the conversation ended prematurely for some reason
                             bot.reply(message, 'OK, nevermind!');
                         }
                     });
-                }
-            });
-        }
-    });
+}
+});
+}
+});
 });
 
 
@@ -203,16 +227,16 @@ controller.hears(['shutdown'], 'direct_message,direct_mention,mention', function
     bot.startConversation(message, function(err, convo) {
 
         convo.ask('Are you sure you want me to shutdown?', [
-            {
-                pattern: bot.utterances.yes,
-                callback: function(response, convo) {
-                    convo.say('Bye!');
-                    convo.next();
-                    setTimeout(function() {
-                        process.exit();
-                    }, 3000);
-                }
-            },
+        {
+            pattern: bot.utterances.yes,
+            callback: function(response, convo) {
+                convo.say('Bye!');
+                convo.next();
+                setTimeout(function() {
+                    process.exit();
+                }, 3000);
+            }
+        },
         {
             pattern: bot.utterances.no,
             default: true,
@@ -234,7 +258,7 @@ controller.hears(['uptime', 'identify yourself', 'who are you', 'what is your na
 
         bot.reply(message,
             ':robot_face: I am a bot named <@' + bot.identity.name +
-             '>. I have been running for ' + uptime + ' on ' + hostname + '.');
+            '>. I have been running for ' + uptime + ' on ' + hostname + '.');
 
     });
 
