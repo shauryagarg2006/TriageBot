@@ -303,6 +303,54 @@
             "body": ""
         },
         {
+            "url": "https://github.ncsu.edu/api/v3/repos/hqtu/TriageBotTesting/issues/2",
+            "repository_url": "https://github.ncsu.edu/api/v3/repos/hqtu/TriageBotTesting",
+            "labels_url": "https://github.ncsu.edu/api/v3/repos/hqtu/TriageBotTesting/issues/2/labels{/name}",
+            "comments_url": "https://github.ncsu.edu/api/v3/repos/hqtu/TriageBotTesting/issues/2/comments",
+            "events_url": "https://github.ncsu.edu/api/v3/repos/hqtu/TriageBotTesting/issues/2/events",
+            "html_url": "https://github.ncsu.edu/hqtu/TriageBotTesting/issues/2",
+            "id": 17750,
+            "number": 2,
+            "title": " Node.js can not found my localhost/start",
+            "user": {
+                "login": "hqtu",
+                "id": 5440,
+                "avatar_url": "https://avatars.github.ncsu.edu/u/5440?",
+                "gravatar_id": "",
+                "url": "https://github.ncsu.edu/api/v3/users/hqtu",
+                "html_url": "https://github.ncsu.edu/hqtu",
+                "followers_url": "https://github.ncsu.edu/api/v3/users/hqtu/followers",
+                "following_url": "https://github.ncsu.edu/api/v3/users/hqtu/following{/other_user}",
+                "gists_url": "https://github.ncsu.edu/api/v3/users/hqtu/gists{/gist_id}",
+                "starred_url": "https://github.ncsu.edu/api/v3/users/hqtu/starred{/owner}{/repo}",
+                "subscriptions_url": "https://github.ncsu.edu/api/v3/users/hqtu/subscriptions",
+                "organizations_url": "https://github.ncsu.edu/api/v3/users/hqtu/orgs",
+                "repos_url": "https://github.ncsu.edu/api/v3/users/hqtu/repos",
+                "events_url": "https://github.ncsu.edu/api/v3/users/hqtu/events{/privacy}",
+                "received_events_url": "https://github.ncsu.edu/api/v3/users/hqtu/received_events",
+                "type": "User",
+                "site_admin": false,
+                "ldap_dn": "CN=hqtu,OU=People,DC=wolftech,DC=ad,DC=ncsu,DC=edu"
+            },
+            "labels": [
+                {
+                    "url": "https://github.ncsu.edu/api/v3/repos/hqtu/TriageBotTesting/labels/nodejs",
+                    "name": "nodejs",
+                    "color": "e99695"
+                }
+            ],
+            "state": "closed",
+            "locked": false,
+            "assignee": null,
+            "assignees": [],
+            "milestone": null,
+            "comments": 0,
+            "created_at": "2016-10-17T20:18:35Z",
+            "updated_at": "2016-10-17T20:21:29Z",
+            "closed_at": "2016-10-17T20:21:29Z",
+            "body": ""
+        },
+        {
             "url": "https://github.ncsu.edu/api/v3/repos/hqtu/TriageBotTesting/issues/1",
             "repository_url": "https://github.ncsu.edu/api/v3/repos/hqtu/TriageBotTesting",
             "labels_url": "https://github.ncsu.edu/api/v3/repos/hqtu/TriageBotTesting/issues/1/labels{/name}",
@@ -379,6 +427,20 @@
                     "url": "https://github.ncsu.edu/api/v3/repos/hqtu/TriageBotTesting/labels/bug",
                     "name": "bug",
                     "color": "ee0701"
+                }
+            ]
+        },
+        {
+            "title": " Node.js can not found my localhost/start",
+            "body": "",
+            "number": 2,
+            "state": "closed",
+            "assignee": "[]",
+            "labels": [
+                {
+                    "url": "https://github.ncsu.edu/api/v3/repos/hqtu/TriageBotTesting/labels/nodejs",
+                    "name": "nodejs",
+                    "color": "e99695"
                 }
             ]
         },
