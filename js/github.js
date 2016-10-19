@@ -44,7 +44,7 @@ function getIssues(owner, repo)
     .reply(200, JSON.stringify(data.issuesList) );
 
 	var options = {
-		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues",
+		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues?state=all",
 		method: 'GET',
 		headers: {
 			"content-type": "application/json",
@@ -52,7 +52,9 @@ function getIssues(owner, repo)
 		}
 	};
 
-	return new Promise(function (resolve, reject)	{
+
+	return new Promise(function (resolve, reject)
+	{
 		// Send a http request to url and specify a callback that will be called upon its return.
 		request(options, function (error, response, body)
 		{
