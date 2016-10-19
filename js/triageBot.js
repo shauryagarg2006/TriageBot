@@ -132,6 +132,8 @@ controller.hears(['deadlines for (.*)', 'Deadline for (.*)'], 'direct_message,di
         {
 
             bot.reply(message, results);
+        }).catch(function (e){
+            bot.reply(message, e+name);
         });
 
     });

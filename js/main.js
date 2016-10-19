@@ -74,6 +74,9 @@ function getIssuesAssigedToAuser(owner,repo,assigneeName)
 				
 				return false;
 			});
+			if(!issuesForAssignee.length){
+				reject("No deadlines found for ");
+			}
 			
 			var result =[];
 			//TODO Strip date
