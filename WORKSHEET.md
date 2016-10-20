@@ -5,7 +5,7 @@ WORKSHEET
 | ------------- | ------------  |  ------------
 | Use Case      | Give the user a list of open issues to work on         | &nbsp;
 | Subflow      | 1             |
-| Subflow      | 2             |  maalbash/DeveloperTriage#4, maalbash/DeveloperTriage#8
+| Subflow      | 2             |  https://github.ncsu.edu/maalbash/DeveloperTriage#4, maalbash/DeveloperTriage#8
 | Subflow      | 3             |  maalbash/DeveloperTriage#8
 | Selenium Tests| Incomplete    | Get Meeting Availability, error1,...
 
