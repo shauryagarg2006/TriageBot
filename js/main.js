@@ -27,20 +27,41 @@ function countOpen(user,repo)
 {
 	return new Promise(function (resolve, reject)
 	{
-		// mock data needs list of issues.
 		github.getIssues(user, repo).then(function (issues)
 		{
 			var states = _.where(issues, { state: "open"});
-			var titles = _.pluck(states, "title");
-			var urls = _.pluck(states, "html_url");
-			var string = "*Here are some open issues:*\n";
-			for(var i = 0; i < states.length; i++){
-				string += (i+1)+". "+ titles[i] + ": ";
-				string += urls[i] + "\n";
+			var string;
+			if(states.length == 0){
+				string = "No issues to work on for now!";
+			} else {
+				var titles = _.pluck(states, "title");
+				var urls = _.pluck(states, "html_url");
+				string = "*Here are some open issues:*\n";
+				for(var i = 0; i < states.length; i++){
+					string += (i+1)+". "+ titles[i] + ": ";
+					string += urls[i] + "\n";
+				}
 			}
 			resolve(string);
 		});
 	});
+}
+
+// TODO complete once the conversation structure is implemented on triageBot
+function assignIssueToUser(owner, repo, issue, assigneeName)
+{
+	// return new Promise(function(resolve, reject){
+	// 	github.assignIssue(user, repo, issue, assigneeName).then(function(assigned){
+	// 		var string;
+	// 		if(assigned != ""){
+	// 			string = "Could not assign the issue to "+assigneeName;
+	// 		} else {
+	// 			string = "Assigned "+issue+" to "+ (assigneeName == owner ? "you" : assigneeName);
+	// 		}
+	// 		console.log(string);
+	// 		resolve(assigned);
+	// 	});
+	// });
 }
 
 function getIssuesAssigedToAuser(owner,repo,assigneeName)
@@ -204,10 +225,6 @@ function getFreeDevelopers(owner,repo, number)
 	});
 }
 */
-
-
-
-
 
 // How many words in an issue's title version an issue's body?
 function titleBodyWordCountRatio(user,repo,number)

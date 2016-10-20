@@ -4,10 +4,9 @@ WORKSHEET
 | Deliverable   | Item/Status   |  Issues/Tasks
 | ------------- | ------------  |  ------------
 | Use Case      | Give the user a list of open issues to work on         | &nbsp;
-| Subflow      | 1             |  #33, #38, #78
-| Subflow      | 2             |  [Pivotal Task](https://www.pivotaltracker.com/story/show/114636091)
-| Subflow      | 3             |  [Trello Card](https://trello.com/c/diA1DaMw)
-| Subflow      | &nbsp;        | &nbsp;
+| Subflow      | 1             |
+| Subflow      | 2             |  #4, #8
+| Subflow      | 3             |  #8
 | Selenium Tests| Incomplete    | Get Meeting Availability, error1,...
 
 | Deliverable   | Item/Status   |  Issues/Tasks

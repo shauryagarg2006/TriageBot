@@ -18,7 +18,7 @@ var bot = controller.spawn({
     token: process.env.BOT_TOKEN
 }).startRTM();
 
-// Listen for a request for issues to work on
+// Listen for a request for issues to work on (TODO Make this a conversation instead!)
 controller.hears(['give me issues'], 'direct_message, direct_mention, mention', function(bot, message) {
 
     // bot.api.reactions.add({
@@ -56,9 +56,6 @@ controller.hears(['deadlines for (.*)', 'Deadline for (.*)'], 'direct_message,di
     });
 });
 
-
-
-
 controller.hears(['Help me with issue #(.*)', 'help me with issue #(.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
     var number = message.match[1];
     controller.storage.users.get(message.user, function(err, user) {
@@ -73,4 +70,3 @@ controller.hears(['Help me with issue #(.*)', 'help me with issue #(.*)'], 'dire
 
     });
 });
-
