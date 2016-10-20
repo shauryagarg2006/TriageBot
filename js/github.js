@@ -4,11 +4,7 @@ var request = require("request");
 var querystring = require('querystring');
 var token = "token " + process.env.GTOKEN;
 var urlRoot = "https://github.ncsu.edu/api/v3";
-
-var chai = require("chai");
-var expect = chai.expect;
 var nock = require("nock");
-
 // Load mock data
 // var data = require("../mock.json");
 // var mockService = nock("https://github.ncsu.edu")
