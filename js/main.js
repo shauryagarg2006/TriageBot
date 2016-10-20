@@ -115,7 +115,7 @@ function getFreeDevelopers(owner,repo, number)
 			var maxsimScore = 0;
 			yissue = _.find(issues, function(issue){return issue.number == number;});
 			var similarIssues = _.filter(closedIssues,function(issueVar){ 
-			var similarityScore = stringSimilarity.compareTwoStrings(issueVar.title, yissue.title);
+			var similarityScore = stringSimilarity.compareTwoStrings(issueVar.title + " " + issueVar.body, yissue.title + " " + issueVar.body);
 			if(similarityScore > 0){
 				if(similarityScore > maxsimScore)
 				{
