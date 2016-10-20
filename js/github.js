@@ -10,7 +10,11 @@ var expect = chai.expect;
 var nock = require("nock");
 
 // Load mock data
-var data = require("../mock.json")
+var data = require("../mock.json");
+var mockService = nock("https://github.ncsu.edu")
+    .persist() // This will persist mock interception for lifetime of program.
+    .get("/api/v3/repos/hqtu/TriageBotTesting/issues?state=all")
+    .reply(200, JSON.stringify(data.issuesList) );
 
 function getRepos(userName)
 {
@@ -38,11 +42,6 @@ function getRepos(userName)
 function getIssues(owner, repo)
 {
 	var url = "/repos/" + owner + "/" + repo + "/issues";
-	var mockService = nock("https://github.ncsu.edu/api/v3")
-    .persist() // This will persist mock interception for lifetime of program.
-    .get(url)
-    .reply(200, JSON.stringify(data.issuesList) );
-
 	var options = {
 		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues?state=all",
 		method: 'GET',
