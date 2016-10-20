@@ -83,7 +83,7 @@ var bot = controller.spawn({
     token: process.env.BOT_TOKEN
 }).startRTM();
 
-// Listen for a request for issues to work on
+// Listen for a request for issues to work on (TODO Make this a conversation instead!)
 controller.hears(['give me issues'], 'direct_message, direct_mention, mention', function(bot, message) {
 
     // bot.api.reactions.add({

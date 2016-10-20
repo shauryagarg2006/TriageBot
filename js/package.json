@@ -20,6 +20,7 @@
     "slackbots": "^0.5.1",
     "bluebird": "^3.4.6",
     "request": "^2.75.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "string-similarity":"^1.1.0"
   }
 }
