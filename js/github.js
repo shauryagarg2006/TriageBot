@@ -114,4 +114,3 @@ function getName(owner)
 exports.getRepos = getRepos;
 exports.getIssues = getIssues;
 exports.getAnIssue = getAnIssue;
-exports.getName = getName;
