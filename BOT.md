@@ -15,7 +15,7 @@ Use Case : Give the user/developer a list of open issues to work on.
 ```
 
 ```
-Use Case: Give me this person’s(name of person) deadlines.
+Use Case: Give the user a requested person’s(id of the person) deadlines.
 1 Preconditions:
   User must have Slack/Github API tokens on their system. The name of the person should exist in the repository as a collaborator.
 2 MainFlow:
@@ -29,7 +29,7 @@ Use Case: Give me this person’s(name of person) deadlines.
 ```
 
 ```
-Use Case: Help me with this issue.
+Use Case: Help the user with their issue(s)/task(s).
 1 Preconditions:
   User must have Slack/Github API tokens on their system, they must have the specified issue assigned to them
 2 Main-Flow
