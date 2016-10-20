@@ -44,7 +44,7 @@ function getIssues(owner, repo)
     .reply(200, JSON.stringify(data.issuesList) );
 
 	var options = {
-		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues?state=all",
+		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues",
 		method: 'GET',
 		headers: {
 			"content-type": "application/json",

@@ -98,13 +98,22 @@ controller.hears(['give me issues'], 'direct_message, direct_mention, mention', 
 
     controller.storage.users.get(message.user, function(err, user) {
         // if (user && user.name) {
-            main.countOpen('hqtu',repo).then(function (results)
-            {
-                bot.reply(message, results);
-            });
+        main.countOpen('hqtu',repo).then(function (results)
+        {
+          bot.reply(message, results);
+        });
+        bot.startConversation(message, askWhichIssue);
         // }
     });
 });
+
+//
+var askWhichIssue = function(response, convo)
+{
+  convo.ask("What issue number do you want to work on?", function(response, convo){
+    convo.say("Awesome! You said: "+response);
+  });
+}
 
 controller.hears(['deadlines for (.*)', 'Deadline for (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
     var name = message.match[1];
