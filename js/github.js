@@ -37,9 +37,8 @@ function getRepos(userName)
 
 function getIssues(owner, repo)
 {
-
-	var url = "/api/v3/repos/" + owner + "/" + repo + "/issues?state=all";
-	var mockService = nock("https://github.ncsu.edu")
+	var url = "/repos/" + owner + "/" + repo + "/issues";
+	var mockService = nock("https://github.ncsu.edu/api/v3")
     .persist() // This will persist mock interception for lifetime of program.
     .get(url)
     .reply(200, JSON.stringify(data.issuesList) );

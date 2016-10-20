@@ -27,20 +27,41 @@ function countOpen(user,repo)
 {
 	return new Promise(function (resolve, reject)
 	{
-		// mock data needs list of issues.
 		github.getIssues(user, repo).then(function (issues)
 		{
 			var states = _.where(issues, { state: "open"});
-			var titles = _.pluck(states, "title");
-			var urls = _.pluck(states, "html_url");
-			var string = "*Here are some open issues:*\n";
-			for(var i = 0; i < states.length; i++){
-				string += (i+1)+". "+ titles[i] + ": ";
-				string += urls[i] + "\n";
+			var string;
+			if(states.length == 0){
+				string = "No issues to work on for now!";
+			} else {
+				var titles = _.pluck(states, "title");
+				var urls = _.pluck(states, "html_url");
+				string = "*Here are some open issues:*\n";
+				for(var i = 0; i < states.length; i++){
+					string += (i+1)+". "+ titles[i] + ": ";
+					string += urls[i] + "\n";
+				}
 			}
 			resolve(string);
 		});
 	});
+}
+
+// TODO complete once the conversation structure is implemented on triageBot
+function assignIssueToUser(owner, repo, issue, assigneeName)
+{
+	// return new Promise(function(resolve, reject){
+	// 	github.assignIssue(user, repo, issue, assigneeName).then(function(assigned){
+	// 		var string;
+	// 		if(assigned != ""){
+	// 			string = "Could not assign the issue to "+assigneeName;
+	// 		} else {
+	// 			string = "Assigned "+issue+" to "+ (assigneeName == owner ? "you" : assigneeName);
+	// 		}
+	// 		console.log(string);
+	// 		resolve(assigned);
+	// 	});
+	// });
 }
 
 function getIssuesAssigedToAuser(owner,repo,assigneeName)
@@ -97,15 +118,15 @@ function getIssuesAssigedToAuser(owner,repo,assigneeName)
 
 function getFreeDevelopers(owner,repo, number)
 {
-	return new Promise(function (resolve, reject) 
+	return new Promise(function (resolve, reject)
 	{
 		// mock data needs list of issues.
-		github.getIssues(owner,repo).then(function (issues) 
+		github.getIssues(owner,repo).then(function (issues)
 		{
 			var resSet=[];
-			
+
 			//TODO add code for fetching open issues
-			var closedIssues =  _.reject(issues,function(issueVar){ 
+			var closedIssues =  _.reject(issues,function(issueVar){
 				if(issueVar.state ==='open' || issueVar.assignees === 'null')
 				{
 					return true;
@@ -114,21 +135,20 @@ function getFreeDevelopers(owner,repo, number)
 					return false;
 			});
 			yissue = _.find(issues, function(issue){return issue.number == number;});
-			var similarIssues = _.filter(closedIssues,function(issueVar){ 
-			similarityScore = stringSimilarity.compareTwoStrings(issueVar.title, yissue.title)
-			console.log(similarityScore);
-			if(similarityScore > 0.2){
-				return true;
-			}
-			else{
-				return false;
-			}
+			var similarIssues = _.filter(closedIssues, function(issueVar){
+				similarityScore = stringSimilarity.compareTwoStrings(issueVar.title, yissue.title)
+				console.log(similarityScore);
+				if(similarityScore > 0.2){
+					return true;
+				} else {
+					return false;
+				}
 			});
-			
+
 			if(!similarIssues.length){
 				reject("Sorry, couldn't find anyone to help you");
 			}
-			
+
 			var result =[];
 			//TODO Strip date
 			for(i=0;i < similarIssues.length;i++){
@@ -142,7 +162,7 @@ function getFreeDevelopers(owner,repo, number)
 				yissuedl.push(yissue.assignees[i].login);
 			}
 			result = _.difference(result, yissuedl);
-			resolve("These people can help you:\n" + result.join('\n'));	
+			resolve("These people can help you:\n" + result.join('\n'));
 		});
 	});
 }
@@ -183,10 +203,6 @@ function getFreeDevelopers(owner,repo, number)
 	});
 }
 */
-
-
-
-
 
 // How many words in an issue's title version an issue's body?
 function titleBodyWordCountRatio(user,repo,number)
