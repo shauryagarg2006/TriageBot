@@ -1,6 +1,6 @@
 var main = require("./main.js")
-var repo = "TriageBotTesting";
-var repoOwner= "hqtu"
+var repo = "raycasting";
+var repoOwner= "nshrest"
 var Promise = require("bluebird");
 var _ = require("underscore");
 if (!process.env.BOT_TOKEN) {
@@ -145,7 +145,7 @@ var asking_name = function(response, convo, message) {
                                   pattern: 'no',
                                   callback: function(response, convo) {
                                     // stop the conversation. this will cause it to end with status == 'stopped'
-                                    
+
                                     convo.stop();
                                   }
                                 },
@@ -221,4 +221,3 @@ controller.hears(['.*'], 'direct_message, direct_mention, mention', function(bot
         // }
       });
 });
-

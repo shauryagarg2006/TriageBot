@@ -69,7 +69,7 @@ function assignIssue(owner, repo, issue, assignee)
 	// TODO add nock
 
 	var options = {
-		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues/"+issue,
+		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues/"+issue+"assignees",
 		method: 'POST',
 		headers: {
 			"content-type": "application/json",
