@@ -24,7 +24,7 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 
 public class SeleniumBotTest
 {
-    private static WebDriver driver;
+  	private static WebDriver driver;
 	
 	@BeforeClass
 	public static void setUp() throws Exception 
@@ -43,7 +43,7 @@ public class SeleniumBotTest
 		WebElement pw = driver.findElement(By.id("password"));
 
 		// Type in our test user login info.
-		email.sendKeys("user@domain.com");
+		email.sendKeys("username@domain.email");
 		pw.sendKeys("password");
 
 		// Click
@@ -52,6 +52,10 @@ public class SeleniumBotTest
 		
 		// Wait until we go to general channel.
 		wait.until(ExpectedConditions.titleContains("general"));
+		
+		// Switch to #bots channel and wait for it to load.
+		driver.get("https://my-private-teamgroup.slack.com/messages/@robotan/");
+		wait.until(ExpectedConditions.titleContains("robotan"));
 	}
 	
 	@AfterClass
@@ -67,10 +71,6 @@ public class SeleniumBotTest
 	{
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 
-		// Switch to #bots channel and wait for it to load.
-		driver.get("https://my-private-teamgroup.slack.com/messages/@robotan/");
-		wait.until(ExpectedConditions.titleContains("robotan"));
-
 		// Type something
 		WebElement messageBot = driver.findElement(By.id("message-input"));
 		messageBot.sendKeys("give me issues");
@@ -79,8 +79,6 @@ public class SeleniumBotTest
 		wait.withTimeout(5, TimeUnit.SECONDS).ignoring(StaleElementReferenceException.class);
 
 		WebElement msg = driver.findElement(By.xpath("//span[@class='message_body' and contains(text(),'Here are some open issues:')]"));
-		//WebElement altmsg = driver.findElement(By.xpath(("//span[@class='message_body' and text() = '﻿⁠No open issues were found']")));
-		
 		assertNotNull(msg);
 	}
 	
@@ -90,10 +88,6 @@ public class SeleniumBotTest
 		WebElement msg = null;
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		
-		// Switch to #bots channel and wait for it to load.
-		driver.get("https://my-private-teamgroup.slack.com/messages/@robotan/");
-		wait.until(ExpectedConditions.titleContains("robotan"));
-
 		// Type something
 		WebElement messageBot = driver.findElement(By.id("message-input"));
 		messageBot.sendKeys("deadline for sgarg7");
@@ -102,8 +96,6 @@ public class SeleniumBotTest
 		wait.withTimeout(5, TimeUnit.SECONDS).ignoring(StaleElementReferenceException.class);
 		WebElement x = null;
 		msg = driver.findElement(By.xpath("//span[@class='message_body' and contains(text(),'Deadlines are')]"));
-		//WebElement altmsg = driver.findElement(By.xpath(("//span[@class='message_body' and text() = '﻿⁠No open issues were found']")));
-		
 		assertNotNull(msg);
 	}
 	
@@ -111,10 +103,6 @@ public class SeleniumBotTest
 	public void gethelp()
 	{
 		WebDriverWait wait = new WebDriverWait(driver, 30);
-
-		// Switch to #bots channel and wait for it to load.
-		driver.get("https://my-private-teamgroup.slack.com/messages/@robotan/");
-		wait.until(ExpectedConditions.titleContains("robotan"));
 
 		// Type something
 		WebElement messageBot = driver.findElement(By.id("message-input"));
@@ -124,9 +112,6 @@ public class SeleniumBotTest
 		wait.withTimeout(5, TimeUnit.SECONDS).ignoring(StaleElementReferenceException.class);
 
 		WebElement msg = driver.findElement(By.xpath("//span[@class='message_body' and contains(text(),'find anyone to help you')]"));
-		//WebElement altmsg = driver.findElement(By.xpath(("//span[@class='message_body' and text() = '﻿⁠No open issues were found']")));
-		
 		assertNotNull(msg);
 	}
-
 }
