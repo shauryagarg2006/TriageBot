@@ -110,15 +110,14 @@ function getIssuesAssigedToAuser(owner,repo,assigneeName)
 
 function getFreeDevelopers(owner,repo, number)
 {
-	return new Promise(function (resolve, reject)
+	return new Promise(function (resolve, reject) 
 	{
 		// mock data needs list of issues.
-		github.getIssues(owner,repo).then(function (issues)
+		github.getIssues(owner,repo).then(function (issues) 
 		{
 
-			var closedIssues =  _.reject(issues,function(issueVar){
-				if(issueVar.state ==='open' || issueVar.assignees === 'null')
-				{
+			var closedIssues =  _.reject(issues,function(issueVar){ 
+				if(issueVar.state ==='open' || issueVar.assignees === 'null'){
 					return true;
 				}
 				else
@@ -127,25 +126,29 @@ function getFreeDevelopers(owner,repo, number)
 			var topIssue = [];
 			var maxsimScore = 0;
 			yissue = _.find(issues, function(issue){return issue.number == number;});
-			var similarIssues = _.filter(closedIssues,function(issueVar){
-			var similarityScore = stringSimilarity.compareTwoStrings(issueVar.title + " " + issueVar.body, yissue.title + " " + issueVar.body);
-			if(similarityScore > 0){
-				if(similarityScore > maxsimScore)
-				{
-					maxsimScore = similarityScore;
-					topIssue.push(issueVar);
-				}
-				return true;
+			if(!yissue){
+				reject("No one can help you with something that does not exists");	
 			}
 			else{
-				return false;
-			}
+				var similarIssues = _.filter(closedIssues,function(issueVar){ 
+				var similarityScore = stringSimilarity.compareTwoStrings(issueVar.title + " " + issueVar.body, yissue.title + " " + issueVar.body);
+				if(similarityScore > 0){
+					if(similarityScore > maxsimScore)
+					{
+						maxsimScore = similarityScore;
+						topIssue.push(issueVar);
+					}
+					return true;
+				}
+				else{
+					return false;
+				}
 			});
 			/*
 			if(!similarIssues.length){
 				reject("Sorry, couldn't find anyone to help you");
 			}
-
+			
 			var result =[];
 			//TODO Strip date
 			for(i=0;i < similarIssues.length;i++){
@@ -155,31 +158,33 @@ function getFreeDevelopers(owner,repo, number)
 				}
 			}
 			yissuedl = [];
-
 			for(i=0;i < yissue.assignees.length;i++){
 				yissuedl.push(yissue.assignees[i].login);
 			}
-
 			result = _.difference(result, yissuedl);*/
 			var result =[];
 			yissuedl = [];
 
-			for(i=0;i < yissue.assignees.length;i++){
-				yissuedl.push(yissue.assignees[i].login);
-			}
-			for(i = 0;i < topIssue[0].assignees.length;i++){
-				result.push(topIssue[0].assignees[i].login);
-			}
-			console.log(result, yissuedl);
-			result = _.difference(result, yissuedl);
-			if(!result.length){
+			
+			if(!topIssue.length){
 				reject("Sorry, couldn't find anyone to help you");
 			}
 			else{
-				resolve("I think " + result.join(',') + " could help you");
+				for(i=0;i < yissue.assignees.length;i++){
+					yissuedl.push(yissue.assignees[i].login);
+				}
+				for(i = 0;i < topIssue[topIssue.length - 1].assignees.length;i++){
+					result.push(topIssue[topIssue.length - 1].assignees[i].login);
+				}
+				result = _.difference(result, yissuedl);
+				if(!result.length){
+					reject("Sorry, couldn't find anyone to help you");
+				}
+				resolve("I think " + result.join(',') + " could help you");	
 			}
-		});
+		}
 	});
+});
 }
 
 
