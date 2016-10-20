@@ -30,7 +30,7 @@ function getRepos(userName)
 function getIssues(owner, repo )
 {
 	var options = {
-		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues",
+		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues?state=all",
 		method: 'GET',
 		headers: {
 			"content-type": "application/json",

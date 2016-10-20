@@ -3,6 +3,7 @@ var chai = require("chai");
 var expect = chai.expect;
 var nock = require("nock");
 var _ = require("underscore");
+var stringSimilarity = require('string-similarity');
 var github = require("./github.js");
 
 
@@ -92,7 +93,59 @@ function getIssuesAssigedToAuser(owner,repo,assigneeName)
 			resolve(result.join('\n'));
 			
 		});
-});
+	});
+}
+
+function getFreeDevelopers(owner,repo, number)
+{
+	return new Promise(function (resolve, reject) 
+	{
+		// mock data needs list of issues.
+		github.getIssues(owner,repo).then(function (issues) 
+		{
+			var resSet=[];
+			
+			//TODO add code for fetching open issues
+			var closedIssues =  _.reject(issues,function(issueVar){ 
+				if(issueVar.state ==='open' || issueVar.assignees === 'null')
+				{
+					return true;
+				}
+				else
+					return false;
+			});
+			yissue = _.find(issues, function(issue){return issue.number == number;});
+			var similarIssues = _.filter(closedIssues,function(issueVar){ 
+			similarityScore = stringSimilarity.compareTwoStrings(issueVar.title, yissue.title)
+			console.log(similarityScore);
+			if(similarityScore > 0.2){
+				return true;
+			}
+			else{
+				return false;
+			}
+			});
+			
+			if(!similarIssues.length){
+				reject("Sorry, couldn't find anyone to help you");
+			}
+			
+			var result =[];
+			//TODO Strip date
+			for(i=0;i < similarIssues.length;i++){
+				for(j = 0; j<similarIssues[i].assignees.length;j++)
+				{
+					result.push(similarIssues[i].assignees[j].login);
+				}
+			}
+			yissuedl = [];
+			for(i=0;i < yissue.assignees.length;i++){
+				yissuedl.push(yissue.assignees[i].login);
+			}
+			result = _.difference(result, yissuedl);
+			resolve("These people can help you:\n" + result.join('\n'));	
+		});
+	});
 }
 
 
@@ -161,5 +214,5 @@ function titleBodyWordCountRatio(user,repo,number)
 exports.getIssuesAssigedToAuser = getIssuesAssigedToAuser;
 exports.findMostFrequentAssignee = findMostFrequentAssignee;
 exports.countOpen = countOpen;
-//exports.getDeadlinesForUser=getDeadlinesForUser;
+exports.getFreeDevelopers=getFreeDevelopers;
 exports.titleBodyWordCountRatio = titleBodyWordCountRatio;
