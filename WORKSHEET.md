@@ -4,7 +4,7 @@
 | Deliverable   | Item/Status   |  Issues/Tasks
 | ------------- | ------------  |  ------------
 | *Design Document* | Provide FIXDESIGN.md    | [#1](https://github.ncsu.edu/maalbash/DeveloperTriage#1)
-| *Mocked Data*     | Provide mock.json as mocking data purposes    | [#3](https://github.ncsu.edu/maalbash/DeveloperTriage#3), [Issues from TriageBotTesting](https://github.ncsu.edu/hqtu/TriageBotTesting)
+| *Mocking*     | Provide mock.json as mocking data and Implementing Nock | [#3](https://github.ncsu.edu/maalbash/DeveloperTriage#3), [#5](https://github.ncsu.edu/maalbash/DeveloperTriage#5), [Issues from TriageBotTesting](https://github.ncsu.edu/hqtu/TriageBotTesting)
 | *Use Case 1*      | Give the user a list of open issues to work on   | &nbsp;
 | Subflow      | 1              |  [Issues from TriageBotTesting](https://github.ncsu.edu/hqtu/TriageBotTesting)
 | Subflow      | 2              |  [#4](https://github.ncsu.edu/maalbash/DeveloperTriage#4), [#9]( https://github.ncsu.edu/maalbash/DeveloperTriage#9)
