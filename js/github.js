@@ -37,6 +37,14 @@ function getRepos(userName)
 
 function getIssues(owner, repo)
 {
+
+	var url = "/api/v3/repos/" + owner + "/" + repo + "/issues?state=all";
+	
+	var mockService = nock("https://github.ncsu.edu")
+    .persist() // This will persist mock interception for lifetime of program.
+    .get(url)
+    .reply(200, JSON.stringify(data.issuesList) );
+	
 	var url = "/repos/" + owner + "/" + repo + "/issues";
 	var options = {
 		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues?state=all",
@@ -78,6 +86,28 @@ function getAnIssue(owner, repo, number )
 		{
 			var obj = JSON.parse(body);
 			resolve(obj);
+		});
+	});
+}
+
+function getName(owner)
+{
+	var options = {
+		url: urlRoot + "/users/" + owner,
+		method: 'GET',
+		headers: {
+			"content-type": "application/json",
+			"Authorization": token
+		}
+	};
+
+	return new Promise(function (resolve, reject)
+	{
+		// Send a http request to url and specify a callback that will be called upon its return.
+		request(options, function (error, response, body)
+		{
+			var obj = JSON.parse(body);
+			resolve(obj.name);
 		});
 	});
 }
