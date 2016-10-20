@@ -178,6 +178,7 @@ function getFreeDevelopers(owner,repo, number)
 			for(i = 0;i < topIssue[0].assignees.length;i++){
 				result.push(topIssue[0].assignees[i].login);
 			}
+			console.log(result, yissuedl);
 			result = _.difference(result, yissuedl);
 			if(!result.length){
 				reject("Sorry, couldn't find anyone to help you");

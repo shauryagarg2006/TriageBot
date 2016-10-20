@@ -39,11 +39,11 @@ function getIssues(owner, repo)
 {
 
 	var url = "/api/v3/repos/" + owner + "/" + repo + "/issues?state=all";
-	
+	/*
 	var mockService = nock("https://github.ncsu.edu")
     .persist() // This will persist mock interception for lifetime of program.
     .get(url)
-    .reply(200, JSON.stringify(data.issuesList) );
+    .reply(200, JSON.stringify(data.issuesList) );*/
 	
 	var url = "/repos/" + owner + "/" + repo + "/issues";
 	var options = {
