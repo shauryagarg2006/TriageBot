@@ -3,20 +3,20 @@
 
 | Deliverable   | Item/Status   |  Issues/Tasks
 | ------------- | ------------  |  ------------
-| *Design Document* | Provide FIXDESIGN.md    | [#1](https://github.ncsu.edu/maalbash/DeveloperTriage#1)
+| Design Document | Provide FIXDESIGN.md    | [#1](https://github.ncsu.edu/maalbash/DeveloperTriage#1)
 
 #### Week 2
 
 | Deliverable   | Item/Status   |  Issues/Tasks
 | ------------- | ------------  |  ------------
-| *Mocking*         | Provide mock.json as mocking data |  [#3](https://github.ncsu.edu/maalbash/DeveloperTriage#3), [Issues from TriageBotTesting](https://github.ncsu.edu/hqtu/TriageBotTesting)
+| Mocking         | Provide mock.json as mocking data |  [#3](https://github.ncsu.edu/maalbash/DeveloperTriage#3), [Issues from TriageBotTesting](https://github.ncsu.edu/hqtu/TriageBotTesting)
 | Three Use Cases   | Composing three different use cases </br> in details for implementation | [Use Cases](https://github.ncsu.edu/maalbash/DeveloperTriage/blob/master/TriageBot_UseCases.md)
 
 #### Week 3
 
 | Deliverable   | Item/Status   |  Issues/Tasks
 | ------------- | ------------  |  ------------
-| *Mocking*         | Implementing Nock | [#5](https://github.ncsu.edu/maalbash/DeveloperTriage#5)
+| Mocking         | Implementing Nock | [#5](https://github.ncsu.edu/maalbash/DeveloperTriage#5)
 | *Use Case 1*      | Give the user a list of open issues to work on   | &nbsp;
 | Subflow           | 1               |  [Issues from TriageBotTesting](https://github.ncsu.edu/hqtu/TriageBotTesting)
 | Subflow           | 2               |  [#4](https://github.ncsu.edu/maalbash/DeveloperTriage#4), [#9]( https://github.ncsu.edu/maalbash/DeveloperTriage#9)
