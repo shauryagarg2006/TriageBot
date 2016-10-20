@@ -14,7 +14,7 @@
 | Subflow      | 2, 3           |  [#6](https://github.ncsu.edu/maalbash/DeveloperTriage#6)
 | Selenium Tests| Incomplete    |  &nbsp;
 | *Use Case 3*      | Help the user with their issues/tasks        | &nbsp;
-| Subflow      | 1             |  #33, #38, #78
+| Subflow      | 1             |  #3
 | Subflow      | 2             |  [Pivotal Task](https://www.pivotaltracker.com/story/show/114636091)
 | Subflow      | 3             |  [Trello Card](https://trello.com/c/diA1DaMw)
 | Selenium Tests| Incomplete   |  &nbsp;
