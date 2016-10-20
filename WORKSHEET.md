@@ -10,11 +10,11 @@
 | Subflow           | 2               |  [#4](https://github.ncsu.edu/maalbash/DeveloperTriage#4), [#9]( https://github.ncsu.edu/maalbash/DeveloperTriage#9)
 | Subflow           | 3               |  [#9]( https://github.ncsu.edu/maalbash/DeveloperTriage#9)
 | Selenium Tests    | Incomplete      |  [#7]( https://github.ncsu.edu/maalbash/DeveloperTriage#7)
-| *Use Case 2*      | Give the user a specific person’s    </br> (name of person) current deadlines | &nbsp;
+| *Use Case 2*      | Give the user a requested person’s</br>(id of the person) current deadlines | &nbsp;
 | Subflow           | 1               |  [Issues from TriageBotTesting](https://github.ncsu.edu/hqtu/TriageBotTesting)
 | Subflow           | 2, 3            |  [#6](https://github.ncsu.edu/maalbash/DeveloperTriage#6)
 | Selenium Tests    | Incomplete      |  [#7]( https://github.ncsu.edu/maalbash/DeveloperTriage#7)
-| *Use Case 3*      | Help the user with their issues/tasks        | &nbsp;
+| *Use Case 3*      | Help the user with their issue(s)/task(s)   | &nbsp;
 | Subflow           | 1, 2            |  [#10]( https://github.ncsu.edu/maalbash/DeveloperTriage#10)
 | Selenium Tests    | Incomplete      |  [#7]( https://github.ncsu.edu/maalbash/DeveloperTriage#7)
 
