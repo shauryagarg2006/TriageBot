@@ -4,19 +4,17 @@ WORKSHEET
 | Deliverable   | Item/Status   |  Issues/Tasks
 | ------------- | ------------  |  ------------
 | Use Case      | Give the user a list of open issues to work on         | &nbsp;
-| Subflow      | 1             |
+| Subflow      | 1             |  [Issues from TriageBotTesting](https://github.ncsu.edu/hqtu/TriageBotTesting)
 | Subflow      | 2             |  [#4](https://github.ncsu.edu/maalbash/DeveloperTriage#4), [#9]( https://github.ncsu.edu/maalbash/DeveloperTriage#9)
 | Subflow      | 3             |  [#9]( https://github.ncsu.edu/maalbash/DeveloperTriage#9)
 | Selenium Tests| Incomplete    | 
 
 | Deliverable   | Item/Status   |  Issues/Tasks
 | ------------- | ------------  |  ------------
-| Use Case      | Give the user a specific person’s(name of person) current deadlines | &nbsp;
-| Subflow      | 1             |  maalbash/DeveloperTriage#3
-| Subflow      | 2             |  [Pivotal Task](https://www.pivotaltracker.com/story/show/114636091)
-| Subflow      | 3             |  [Trello Card](https://trello.com/c/diA1DaMw)
-| Subflow      | &nbsp;        | &nbsp;
-| Selenium Tests| Incomplete    | Get Meeting Availability, error1,...
+| Use Case      | Give the user a specific person’s </br> (name of person) current deadlines | &nbsp;
+| Subflow      | 1              |  [Issues from TriageBotTesting](https://github.ncsu.edu/hqtu/TriageBotTesting)
+| Subflow      | 2, 3           |  [#6](https://github.ncsu.edu/maalbash/DeveloperTriage#6)
+| Selenium Tests| Incomplete    | 
 
 | Deliverable   | Item/Status   |  Issues/Tasks
 | ------------- | ------------  |  ------------
