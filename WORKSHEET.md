@@ -5,9 +5,9 @@ WORKSHEET
 | ------------- | ------------  |  ------------
 | Use Case      | Give the user a list of open issues to work on         | &nbsp;
 | Subflow      | 1             |
-| Subflow      | 2             |  https://github.ncsu.edu/maalbash/DeveloperTriage#4, maalbash/DeveloperTriage#8
-| Subflow      | 3             |  maalbash/DeveloperTriage#8
-| Selenium Tests| Incomplete    | Get Meeting Availability, error1,...
+| Subflow      | 2             |  <a href="https://github.ncsu.edu/maalbash/DeveloperTriage#4">#4</a>, <a href="https://github.ncsu.edu/maalbash/DeveloperTriage#9">#9</a>
+| Subflow      | 3             |  <a href="https://github.ncsu.edu/maalbash/DeveloperTriage#9">#9</a>
+| Selenium Tests| Incomplete    | 
 
 | Deliverable   | Item/Status   |  Issues/Tasks
 | ------------- | ------------  |  ------------
