@@ -1,11 +1,11 @@
 ### Use Cases
 
 ```
-Use Case : Give me list of open issues to work.
+Use Case : Give the user/developer a list of open issues to work on.
 1 Preconditions: 
   User must have Slack/Github API tokens on their system.
 2 MainFlow:
-  User will request for list of open issues that he can work on. Bot will provide list of issues and user selects one of them. That issue is assigned to the user now.
+  The user will request for list of open issues that they can work on. Bot will provide list of issues and user selects one of them. That issue is assigned to the user now.
 3 Subflow:
   [S1] User will request for open issues to work.
   [S2] Bot will return list of issues. User selects one of them.
