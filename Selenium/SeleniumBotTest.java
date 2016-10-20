@@ -43,8 +43,8 @@ public class SeleniumBotTest
 		WebElement pw = driver.findElement(By.id("password"));
 
 		// Type in our test user login info.
-		email.sendKeys("mohz2009@hotmail.co.uk");
-		pw.sendKeys("142536");
+		email.sendKeys("username@domain.email");
+		pw.sendKeys("password");
 
 		// Click
 		WebElement signin = driver.findElement(By.id("signin_btn"));
