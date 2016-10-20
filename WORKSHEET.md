@@ -28,6 +28,7 @@
 | Selenium Tests    | Incomplete      |  [#7]( https://github.ncsu.edu/maalbash/DeveloperTriage/issues/7)
 | *Use Case 3*      | Help the user with their issue(s)/task(s)   | &nbsp;
 | Subflow           | 1, 2            |  [#10]( https://github.ncsu.edu/maalbash/DeveloperTriage/issues/10)
+| Subflow           | 2, 3            |  [#11](https://github.ncsu.edu/maalbash/DeveloperTriage/issues/11)
 | Selenium Tests    | Incomplete      |  [#7]( https://github.ncsu.edu/maalbash/DeveloperTriage/issues/7)
 
 
