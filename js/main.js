@@ -6,14 +6,13 @@ var _ = require("underscore");
 var stringSimilarity = require('string-similarity');
 var github = require("./github.js");
 
-
 // Which person is assigned to most to issues?
 function findMostFrequentAssignee(user,repo)
 {
-	return new Promise(function (resolve, reject) 
+	return new Promise(function (resolve, reject)
 	{
 		// mock data needs list of issues.
-		github.getIssues(user,repo).then(function (issues) 
+		github.getIssues(user,repo).then(function (issues)
 		{
 			var names = _.pluck(issues,"assignee")
 			var frequency = _.countBy(names, function (name) { return name; });
@@ -23,37 +22,37 @@ function findMostFrequentAssignee(user,repo)
 	});
 }
 
-// How many closed issues?
+// Return open issues in a user's repo
 function countOpen(user,repo)
 {
-	return new Promise(function (resolve, reject) 
+	return new Promise(function (resolve, reject)
 	{
 		// mock data needs list of issues.
-		github.getIssues(user,repo).then(function (issues) 
+		github.getIssues(user, repo).then(function (issues)
 		{
-			var states = _.pluck(issues,"state")
-			//console.log(states);
-			c = 0;
-			for (i = 0; i < states.length; i++){
-				if(states[i] == 'open')
-					c += 1;
+			var states = _.where(issues, { state: "open"});
+			var titles = _.pluck(states, "title");
+			var urls = _.pluck(states, "html_url");
+			var string = "*Here are some open issues:*\n";
+			for(var i = 0; i < states.length; i++){
+				string += (i+1)+". "+ titles[i] + ": ";
+				string += urls[i] + "\n";
 			}
-			resolve(c);
+			resolve(string);
 		});
 	});
 }
 
-
 function getIssuesAssigedToAuser(owner,repo,assigneeName)
 {
-	return new Promise(function (resolve, reject) 
+	return new Promise(function (resolve, reject)
 	{
 		// mock data needs list of issues.
-		github.getIssues(owner,repo).then(function (issues) 
+		github.getIssues(owner,repo).then(function (issues)
 		{
 			var resSet=[];
 			//TODO add code for fetching open issues
-			var issuesWithAssignee =  _.reject(issues,function(issueVar){ 
+			var issuesWithAssignee =  _.reject(issues,function(issueVar){
 				if(issueVar.assignee == null || issueVar.state!='open' || issueVar.milestone == null)
 				{
 					return true;
@@ -61,24 +60,24 @@ function getIssuesAssigedToAuser(owner,repo,assigneeName)
 				return false;
 			});
 
-			var issuesForAssignee = _.filter(issuesWithAssignee,function(issueVar){ 
-				
+			var issuesForAssignee = _.filter(issuesWithAssignee,function(issueVar){
+
 				var assigneesArray =issueVar.assignees;
-				
-				
+
+
 				for (i = 0; i < assigneesArray.length; i++){
 					if(assigneesArray[i].login == assigneeName){
-					
+
 						return true;
 					}
 				}
-				
+
 				return false;
 			});
 			if(!issuesForAssignee.length){
 				reject("No deadlines found for ");
 			}
-			
+
 			var result =[];
 			//TODO Strip date
 			for(i=0;i<issuesForAssignee.length;i++){
@@ -89,9 +88,9 @@ function getIssuesAssigedToAuser(owner,repo,assigneeName)
 
 
 			}
-			
+
 			resolve(result.join('\n'));
-			
+
 		});
 	});
 }
@@ -152,10 +151,10 @@ function getFreeDevelopers(owner,repo, number)
 
 /*function getDeadlinesForUser(owner,repo,assigneeName)
 {
-	return new Promise(function (resolve, reject) 
+	return new Promise(function (resolve, reject)
 	{
 		// mock data needs list of issues.
-		getIssuesAssigedToAuser(user,repo,assigneeName).then(function (issues) 
+		getIssuesAssigedToAuser(user,repo,assigneeName).then(function (issues)
 		{
 			var result=[];
 			for( var i = 0; i < issues.length; i++ )
@@ -176,7 +175,7 @@ function getFreeDevelopers(owner,repo, number)
 			//extracting issues with milestones
 			var issuesWithAssignee =  _.reject(issues,function(issueVar){ return issueVar.assignee == null; });
 
-			
+
 
 
 			resolve(result);
@@ -192,10 +191,10 @@ function getFreeDevelopers(owner,repo, number)
 // How many words in an issue's title version an issue's body?
 function titleBodyWordCountRatio(user,repo,number)
 {
-	return new Promise(function (resolve, reject) 
+	return new Promise(function (resolve, reject)
 	{
 		// mock data needs list of issues.
-		github.getAnIssue(user,repo,number).then(function (issue) 
+		github.getAnIssue(user,repo,number).then(function (issue)
 		{
 			var titleWords = issue.title.split(/\W+|\d+/).length;
 			var bodyWords  = issue.body.split(/\W+|\d+/).length;
@@ -204,7 +203,7 @@ function titleBodyWordCountRatio(user,repo,number)
 				resolve("NA");
 				// HINT: http://stackoverflow.com/questions/4964484/why-does-split-on-an-empty-string-return-a-non-empty-array
 			}
-			//console.log( titleWords, bodyWords, issue.body);			
+			//console.log( titleWords, bodyWords, issue.body);
 			var str = ( titleWords / bodyWords ) + "";
 			resolve(str);
 		});
