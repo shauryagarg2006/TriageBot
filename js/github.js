@@ -10,11 +10,11 @@ var expect = chai.expect;
 var nock = require("nock");
 
 // Load mock data
-var data = require("../mock.json");
-var mockService = nock("https://github.ncsu.edu")
-    .persist() // This will persist mock interception for lifetime of program.
-    .get("/api/v3/repos/hqtu/TriageBotTesting/issues?state=all")
-    .reply(200, JSON.stringify(data.issuesList) );
+// var data = require("../mock.json");
+// var mockService = nock("https://github.ncsu.edu")
+//     .persist() // This will persist mock interception for lifetime of program.
+//     .get("/api/v3/repos/hqtu/TriageBotTesting/issues?state=all")
+//     .reply(200, JSON.stringify(data.issuesList) );
 
 function getRepos(userName)
 {
@@ -43,22 +43,20 @@ function getIssues(owner, repo)
 {
 
 	var url = "/api/v3/repos/" + owner + "/" + repo + "/issues?state=all";
-	
-	var mockService = nock("https://github.ncsu.edu")
-    .persist() // This will persist mock interception for lifetime of program.
-    .get(url)
-    .reply(200, JSON.stringify(data.issuesList) );
-	
-	var url = "/repos/" + owner + "/" + repo + "/issues";
+
+	// var mockService = nock("https://github.ncsu.edu")
+  //   .persist() // This will persist mock interception for lifetime of program.
+  //   .get(url)
+  //   .reply(200, JSON.stringify(data.issuesList));
+
 	var options = {
-		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues",
+		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues?state=all",
 		method: 'GET',
 		headers: {
 			"content-type": "application/json",
 			"Authorization": token
 		}
 	};
-
 
 	return new Promise(function (resolve, reject)
 	{
@@ -71,8 +69,33 @@ function getIssues(owner, repo)
 	});
 }
 
+function assignIssue(owner, repo, issue, assignee)
+{
+	// TODO add nock
 
-function getAnIssue(owner, repo, number )
+	var options = {
+		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues/"+issue,
+		method: 'POST',
+		headers: {
+			"content-type": "application/json",
+			"Authorization": token
+		},
+		json: {
+      "assignees" : [assignee]
+    }
+	};
+
+	return new Promise(function (resolve, reject)
+	{
+		// Send a http request to url and specify a callback that will be called upon its return.
+		request(options, function (error, response, body)
+		{
+			resolve(response);
+		});
+	});
+}
+
+function getAnIssue(owner, repo, number)
 {
 	var options = {
 		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues/"+number,
@@ -119,3 +142,4 @@ function getName(owner)
 exports.getRepos = getRepos;
 exports.getIssues = getIssues;
 exports.getAnIssue = getAnIssue;
+exports.assignIssue = assignIssue;

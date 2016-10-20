@@ -33,7 +33,7 @@ controller.hears(['give me issues'], 'direct_message, direct_mention, mention', 
 
     controller.storage.users.get(message.user, function(err, user) {
         // if (user && user.name) {
-        main.countOpen('hqtu',repo).then(function (results)
+        main.countOpen(repoOwner, repo).then(function (results)
         {
           bot.reply(message, results);
         });
@@ -43,10 +43,13 @@ controller.hears(['give me issues'], 'direct_message, direct_mention, mention', 
 });
 
 //
-var askWhichIssue = function(response, convo)
+askWhichIssue = function(response, convo)
 {
   convo.ask("What issue number do you want to work on?", function(response, convo){
-    convo.say("Awesome! You said: "+response);
+    main.assignIssueToUser(repoOwner, repo, response.text, repoOwner).then(function(resp){
+      convo.say(resp);
+      convo.next();
+    });
   });
 }
 
@@ -56,7 +59,6 @@ controller.hears(['deadlines for (.*)', 'Deadline for (.*)'], 'direct_message,di
 
         main.getIssuesAssigedToAuser(repoOwner,repo,name).then(function (results)
         {
-
             bot.reply(message, results);
         }).catch(function (e){
             bot.reply(message, e+name);
