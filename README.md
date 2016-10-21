@@ -16,4 +16,4 @@ The first three use cases of our Developer Triage Bot are described in the [Tria
 
 ## Screencast Demo
 
-Our Bot is demonstrated in this demo on youtube and can be accessed in [here](https://youtu.be/gZ3FrKAC1VQ)
+Our Bot is demonstrated in this demo on youtube and can be accessed in [here](https://youtu.be/gZ3FrKAC1VQ).
