@@ -3,40 +3,43 @@ var chai = require("chai");
 var expect = chai.expect;
 var nock = require("nock");
 var _ = require("underscore");
+var stringSimilarity = require('string-similarity');
 var github = require("./github.js");
 
-// Which person is assigned to most to issues?
-function findMostFrequentAssignee(user,repo)
-{
-	return new Promise(function (resolve, reject)
-	{
-		// mock data needs list of issues.
-		github.getIssues(user,repo).then(function (issues)
-		{
-			var names = _.pluck(issues,"assignee")
-			var frequency = _.countBy(names, function (name) { return name; });
-			var max = _.max(_.keys(frequency), function(item){ return frequency[item] })
-			resolve({userName: max, count: frequency[max]});
-		});
-	});
-}
+
 
 // Return open issues in a user's repo
 function countOpen(user,repo)
 {
 	return new Promise(function (resolve, reject)
 	{
-		// mock data needs list of issues.
 		github.getIssues(user, repo).then(function (issues)
 		{
 			var states = _.where(issues, { state: "open"});
-			var titles = _.pluck(states, "title");
-			var urls = _.pluck(states, "html_url");
-			var string = "*Here are some open issues:*\n";
-			for(var i = 0; i < states.length; i++){
-				string += (i+1)+". "+ titles[i] + ": ";
-				string += urls[i] + "\n";
+			var string;
+			if(states.length == 0){
+				string = "No issues to work on for now!";
+			} else {
+				var titles = _.pluck(states, "title");
+				var urls = _.pluck(states, "html_url");
+				string = "*Here are some open issues:*\n";
+				for(var i = 0; i < states.length; i++){
+					string += (i+1)+". "+ titles[i] + ": ";
+					string += urls[i] + "\n";
+				}
 			}
+			resolve(string);
+		});
+	});
+}
+
+// Assignes a user to an issue
+function assignIssueToUser(owner, repo, issue, assigneeName)
+{
+	return new Promise(function(resolve, reject){
+		github.assignIssue(owner, repo, issue, assigneeName).then(function(response){
+			var assignedTo = response.body.assignee.login;
+			var string = "Assigned "+issue+" to "+ (assignedTo == owner ? "you" : assignedTo);
 			resolve(string);
 		});
 	});
@@ -84,81 +87,74 @@ function getIssuesAssigedToAuser(owner,repo,assigneeName)
 				result.push(issuesForAssignee[i].html_url);
 				result.push('Deadline- '+issuesForAssignee[i].milestone.due_on);
 				result.push('\n');
-
-
 			}
-
 			resolve(result.join('\n'));
 
 		});
+	});
+}
+
+function getFreeDevelopers(owner,repo, number)
+{
+	return new Promise(function (resolve, reject) 
+	{
+		// mock data needs list of issues.
+		github.getIssues(owner,repo).then(function (issues) 
+		{
+			var closedIssues =  _.reject(issues,function(issueVar){ 
+				if(issueVar.state ==='open' || issueVar.assignees === 'null'){
+					return true;
+				}
+				else
+					return false;
+			});
+			var topIssue = [];
+			var maxsimScore = 0;
+			yissue = _.find(issues, function(issue){return issue.number == number;});
+			if(!yissue){
+				reject("No one can help you with something that does not exists");	
+			}
+			else{
+				var similarIssues = _.filter(closedIssues,function(issueVar){ 
+				var similarityScore = stringSimilarity.compareTwoStrings(issueVar.title + " " + issueVar.body, yissue.title + " " + issueVar.body);
+				if(similarityScore > 0.5){
+					if(similarityScore > maxsimScore)
+					{
+						maxsimScore = similarityScore;
+						topIssue.push(issueVar);
+					}
+					return true;
+				}
+				else{
+					return false;
+				}
+			});
+			var result =[];
+			yissuedl = [];
+
+			
+			if(!topIssue.length){
+				reject("Sorry, couldn't find anyone to help you");
+			}
+			else{
+				for(i=0;i < yissue.assignees.length;i++){
+					yissuedl.push(yissue.assignees[i].login);
+				}
+				for(i = 0;i < topIssue[topIssue.length - 1].assignees.length;i++){
+					result.push(topIssue[topIssue.length - 1].assignees[i].login);
+				}
+				result = _.difference(result, yissuedl);
+				if(!result.length){
+					reject("Sorry, couldn't find anyone to help you");
+				}
+				resolve("I think " + result.join(',') + " could help you");	
+			}
+		}
+	});
 });
 }
 
-
-
-/*function getDeadlinesForUser(owner,repo,assigneeName)
-{
-	return new Promise(function (resolve, reject)
-	{
-		// mock data needs list of issues.
-		getIssuesAssigedToAuser(user,repo,assigneeName).then(function (issues)
-		{
-			var result=[];
-			for( var i = 0; i < issues.length; i++ )
-			{
-				getAMileStone(owner, repo, issue.milestone.number).then(function(milestone){
-
-				});
-
-			}
-			/*var issuesWithMileStones = _.reject(issues,function(issueVar){ return issueVar.milestone == null; });
-
-			for( var i = 0; i < issuesWithMileStones.length; i++ )
-			{
-				var name = issuesWithMileStones[i].milestone.number;
-				resSet.push(name);
-			}
-			var resSet=[];
-			//extracting issues with milestones
-			var issuesWithAssignee =  _.reject(issues,function(issueVar){ return issueVar.assignee == null; });
-
-
-
-
-			resolve(result);
-		});
-	});
-}
-*/
-
-
-
-
-
-// How many words in an issue's title version an issue's body?
-function titleBodyWordCountRatio(user,repo,number)
-{
-	return new Promise(function (resolve, reject)
-	{
-		// mock data needs list of issues.
-		github.getAnIssue(user,repo,number).then(function (issue)
-		{
-			var titleWords = issue.title.split(/\W+|\d+/).length;
-			var bodyWords  = issue.body.split(/\W+|\d+/).length;
-			if( issue.body == "" )
-			{
-				resolve("NA");
-				// HINT: http://stackoverflow.com/questions/4964484/why-does-split-on-an-empty-string-return-a-non-empty-array
-			}
-			//console.log( titleWords, bodyWords, issue.body);
-			var str = ( titleWords / bodyWords ) + "";
-			resolve(str);
-		});
-	});
-}
-
 exports.getIssuesAssigedToAuser = getIssuesAssigedToAuser;
-exports.findMostFrequentAssignee = findMostFrequentAssignee;
+exports.assignIssueToUser = assignIssueToUser;
 exports.countOpen = countOpen;
-//exports.getDeadlinesForUser=getDeadlinesForUser;
-exports.titleBodyWordCountRatio = titleBodyWordCountRatio;
+exports.getFreeDevelopers=getFreeDevelopers;

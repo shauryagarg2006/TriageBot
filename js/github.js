@@ -4,13 +4,10 @@ var request = require("request");
 var querystring = require('querystring');
 var token = "token " + process.env.GTOKEN;
 var urlRoot = "https://github.ncsu.edu/api/v3";
-
-var chai = require("chai");
-var expect = chai.expect;
 var nock = require("nock");
-
 // Load mock data
-var data = require("../mock.json")
+var data = require("../mock.json");
+var data_post = require("../mock_post_assignees.json");
 
 function getRepos(userName)
 {
@@ -37,24 +34,24 @@ function getRepos(userName)
 
 function getIssues(owner, repo)
 {
-	var url = "/repos/" + owner + "/" + repo + "/issues";
-	var mockService = nock("https://github.ncsu.edu/api/v3")
-    .persist() // This will persist mock interception for lifetime of program.
-    .get(url)
-    .reply(200, JSON.stringify(data.issuesList) );
+     	nock("https://github.ncsu.edu")// This will persist mock interception for lifetime of program.
+          .persist()
+     	.get("/api/v3/repos/TriageBotTesting/hqtu/issues?state=all")
+     	.reply(200, JSON.stringify(data.issuesList) );
 
-	var options = {
-		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues?state=all",
-		method: 'GET',
-		headers: {
-			"content-type": "application/json",
-			"Authorization": token
-		}
-	};
+     	var url = "/api/v3/repos/" + owner + "/" + repo + "/issues?state=all";
 
+     	var options = {
+     		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues?state=all",
+     		method: 'GET',
+     		headers: {
+     			"content-type": "application/json",
+     			"Authorization": token
+     		}
+     	};
 
-	return new Promise(function (resolve, reject)
-	{
+     	return new Promise(function (resolve, reject)
+     	{
 		// Send a http request to url and specify a callback that will be called upon its return.
 		request(options, function (error, response, body)
 		{
@@ -62,22 +59,54 @@ function getIssues(owner, repo)
 			resolve(obj);
 		});
 	});
-}
+     }
 
+     function assignIssue(owner, repo, issue, assignee)
+     {
+     	
+     	nock("https://github.ncsu.edu")
+          .persist()
+     	.filteringPath(function(path) {
+     		return "/api/v3/repos/hqtu/TriageBotTesting/issues/10/assignees";
+     	})
+     	.post("/api/v3/repos/hqtu/TriageBotTesting/issues/10/assignees")
+     	.reply(200, JSON.stringify(data_post) );
 
-function getAnIssue(owner, repo, number )
-{
-	var options = {
-		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues/"+number,
-		method: 'GET',
-		headers: {
-			"content-type": "application/json",
-			"Authorization": token
-		}
-	};
+     	var options = {
+     		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues/"+issue+"/assignees",
+     		method: 'POST',
+     		headers: {
+     			"content-type": "application/json",
+     			"Authorization": token
+     		},
+     		json: {
+     			"assignees" : [assignee]
+     		}
+     	};
 
-	return new Promise(function (resolve, reject)
-	{
+     	return new Promise(function (resolve, reject)
+     	{
+		// Send a http request to url and specify a callback that will be called upon its return.
+		request(options, function (error, response, body)
+		{
+			resolve(response);
+		});
+	});
+     }
+
+     function getAnIssue(owner, repo, number)
+     {
+     	var options = {
+     		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues/"+number,
+     		method: 'GET',
+     		headers: {
+     			"content-type": "application/json",
+     			"Authorization": token
+     		}
+     	};
+
+     	return new Promise(function (resolve, reject)
+     	{
 		// Send a http request to url and specify a callback that will be called upon its return.
 		request(options, function (error, response, body)
 		{
@@ -85,8 +114,31 @@ function getAnIssue(owner, repo, number )
 			resolve(obj);
 		});
 	});
-}
+     }
 
-exports.getRepos = getRepos;
-exports.getIssues = getIssues;
-exports.getAnIssue = getAnIssue;
+     function getName(owner)
+     {
+     	var options = {
+     		url: urlRoot + "/users/" + owner,
+     		method: 'GET',
+     		headers: {
+     			"content-type": "application/json",
+     			"Authorization": token
+     		}
+     	};
+
+     	return new Promise(function (resolve, reject)
+     	{
+		// Send a http request to url and specify a callback that will be called upon its return.
+		request(options, function (error, response, body)
+		{
+			var obj = JSON.parse(body);
+			resolve(obj.name);
+		});
+	});
+     }
+
+     exports.getRepos = getRepos;
+     exports.getIssues = getIssues;
+     exports.getAnIssue = getAnIssue;
+     exports.assignIssue = assignIssue;
