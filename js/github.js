@@ -6,11 +6,13 @@ var token = "token " + process.env.GTOKEN;
 var urlRoot = "https://github.ncsu.edu/api/v3";
 var nock = require("nock");
 // Load mock data
-// var data = require("../mock.json");
-// var mockService = nock("https://github.ncsu.edu")
-//     .persist() // This will persist mock interception for lifetime of program.
-//     .get("/api/v3/repos/hqtu/TriageBotTesting/issues?state=all")
-//     .reply(200, JSON.stringify(data.issuesList) );
+var data = require("../mock.json");
+var data_post = require("../mock_post_assignees.json");
+
+
+
+
+
 
 function getRepos(userName)
 {
@@ -37,24 +39,23 @@ function getRepos(userName)
 
 function getIssues(owner, repo)
 {
+     	nock("https://github.ncsu.edu")// This will persist mock interception for lifetime of program.
+     	.get("/api/v3/repos/TriageBotTesting/hqtu/issues?state=all")
+     	.reply(200, JSON.stringify(data.issuesList) );
 
-	var url = "/api/v3/repos/" + owner + "/" + repo + "/issues?state=all";
+     	var url = "/api/v3/repos/" + owner + "/" + repo + "/issues?state=all";
 
-	// var mockService = nock("https://github.ncsu.edu")
-  //   .persist() // This will persist mock interception for lifetime of program.
-  //   .get(url)
-  //   .reply(200, JSON.stringify(data.issuesList));
-	var options = {
-		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues?state=all",
-		method: 'GET',
-		headers: {
-			"content-type": "application/json",
-			"Authorization": token
-		}
-	};
+     	var options = {
+     		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues?state=all",
+     		method: 'GET',
+     		headers: {
+     			"content-type": "application/json",
+     			"Authorization": token
+     		}
+     	};
 
-	return new Promise(function (resolve, reject)
-	{
+     	return new Promise(function (resolve, reject)
+     	{
 		// Send a http request to url and specify a callback that will be called upon its return.
 		request(options, function (error, response, body)
 		{
@@ -62,47 +63,53 @@ function getIssues(owner, repo)
 			resolve(obj);
 		});
 	});
-}
+     }
 
-function assignIssue(owner, repo, issue, assignee)
-{
-	// TODO add nock
+     function assignIssue(owner, repo, issue, assignee)
+     {
+     	
+     	nock("https://github.ncsu.edu")
+     	.filteringPath(function(path) {
+     		return "/api/v3/repos/hqtu/TriageBotTesting/issues/10/assignees";
+     	})
+     	.post("/api/v3/repos/hqtu/TriageBotTesting/issues/10/assignees")
+     	.reply(200, JSON.stringify(data_post) );
 
-	var options = {
-		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues/"+issue+"assignees",
-		method: 'POST',
-		headers: {
-			"content-type": "application/json",
-			"Authorization": token
-		},
-		json: {
-      "assignees" : [assignee]
-    }
-	};
+     	var options = {
+     		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues/"+issue+"/assignees",
+     		method: 'POST',
+     		headers: {
+     			"content-type": "application/json",
+     			"Authorization": token
+     		},
+     		json: {
+     			"assignees" : [assignee]
+     		}
+     	};
 
-	return new Promise(function (resolve, reject)
-	{
+     	return new Promise(function (resolve, reject)
+     	{
 		// Send a http request to url and specify a callback that will be called upon its return.
 		request(options, function (error, response, body)
 		{
 			resolve(response);
 		});
 	});
-}
+     }
 
-function getAnIssue(owner, repo, number)
-{
-	var options = {
-		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues/"+number,
-		method: 'GET',
-		headers: {
-			"content-type": "application/json",
-			"Authorization": token
-		}
-	};
+     function getAnIssue(owner, repo, number)
+     {
+     	var options = {
+     		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues/"+number,
+     		method: 'GET',
+     		headers: {
+     			"content-type": "application/json",
+     			"Authorization": token
+     		}
+     	};
 
-	return new Promise(function (resolve, reject)
-	{
+     	return new Promise(function (resolve, reject)
+     	{
 		// Send a http request to url and specify a callback that will be called upon its return.
 		request(options, function (error, response, body)
 		{
@@ -110,21 +117,21 @@ function getAnIssue(owner, repo, number)
 			resolve(obj);
 		});
 	});
-}
+     }
 
-function getName(owner)
-{
-	var options = {
-		url: urlRoot + "/users/" + owner,
-		method: 'GET',
-		headers: {
-			"content-type": "application/json",
-			"Authorization": token
-		}
-	};
+     function getName(owner)
+     {
+     	var options = {
+     		url: urlRoot + "/users/" + owner,
+     		method: 'GET',
+     		headers: {
+     			"content-type": "application/json",
+     			"Authorization": token
+     		}
+     	};
 
-	return new Promise(function (resolve, reject)
-	{
+     	return new Promise(function (resolve, reject)
+     	{
 		// Send a http request to url and specify a callback that will be called upon its return.
 		request(options, function (error, response, body)
 		{
@@ -132,9 +139,9 @@ function getName(owner)
 			resolve(obj.name);
 		});
 	});
-}
+     }
 
-exports.getRepos = getRepos;
-exports.getIssues = getIssues;
-exports.getAnIssue = getAnIssue;
-exports.assignIssue = assignIssue;
+     exports.getRepos = getRepos;
+     exports.getIssues = getIssues;
+     exports.getAnIssue = getAnIssue;
+     exports.assignIssue = assignIssue;

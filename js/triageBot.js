@@ -1,6 +1,6 @@
 var main = require("./main.js")
-var repo = "raycasting";
-var repoOwner= "nshrest"
+var repo = "hqtu";
+var repoOwner= "TriageBotTesting"
 var Promise = require("bluebird");
 var _ = require("underscore");
 if (!process.env.BOT_TOKEN) {
