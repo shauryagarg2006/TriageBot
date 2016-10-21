@@ -17,9 +17,9 @@ Use Case : Give the user/developer a list of open issues to work on.
 ```
 Use Case: Give the user a requested person’s(id of the person) deadlines.
 1 Preconditions:
-  User must have Slack/Github API tokens on their system. The name of the person should exist in the repository as a collaborator.
+  User must have Slack/Github API tokens on their system. The name of the person should exist in the repository as a collaborator. Issue should have a milestone attached and should be an open issue.
 2 MainFlow:
-  The user will ask for another user’s deadlines. A list of issues sorted with the most short deadline will be showed to the user.
+  The user will ask for another user’s deadlines. A list of issues sorted with their deadlines will be showed to the user.
 3 Subflow:
   [S1] Get a list of issues [S2] and then do [S3]
   [S2] Return a list of open issues assigned to the person whose name is supplied by the user.
@@ -31,14 +31,13 @@ Use Case: Give the user a requested person’s(id of the person) deadlines.
 ```
 Use Case: Help the user with their issue(s)/task(s).
 1 Preconditions:
-  User must have Slack/Github API tokens on their system, they must have the specified issue assigned to them
+  User must have Slack/Github API tokens on their system. It should be a valid open issue.
 2 Main-Flow
-  The user will ask for help with an issue assigned to them [S1]. They’ll receive a list of developers who have experience dealing with these types of issues. They can pick one of them [S2], and the bot will send a message to the developer informing them of the user’s need for assistance. [S3]
+  The user will ask for help with an issue assigned to them [S1]. They’ll receive a list of developers who have experience dealing with these types of issues.
 3 Sub-Flow
   [S1] User will issue a help command with issue # to the bot.
-  [S2] Bot will return a list of developers who have experience dealing with similar issues. The user will select one of them.
-  [S3]Send a message to the developer informing them of the needed assistance.
+  [S2] Bot will return a list of developers who have experience dealing with similar issues.
 4 Alternative Flow
-  [E1] The issue is not assigned to the user.
+  [E1] The issue doesn't exists.
   [E2] No available developer with experience dealing with this issue. 
 ```
