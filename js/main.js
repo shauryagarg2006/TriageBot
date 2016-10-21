@@ -101,7 +101,6 @@ function getFreeDevelopers(owner,repo, number)
 		// mock data needs list of issues.
 		github.getIssues(owner,repo).then(function (issues) 
 		{
-			console.log(issues);
 			var closedIssues =  _.reject(issues,function(issueVar){ 
 				if(issueVar.state ==='open' || issueVar.assignees === 'null'){
 					return true;
@@ -118,7 +117,7 @@ function getFreeDevelopers(owner,repo, number)
 			else{
 				var similarIssues = _.filter(closedIssues,function(issueVar){ 
 				var similarityScore = stringSimilarity.compareTwoStrings(issueVar.title + " " + issueVar.body, yissue.title + " " + issueVar.body);
-				if(similarityScore > 0){
+				if(similarityScore > 0.5){
 					if(similarityScore > maxsimScore)
 					{
 						maxsimScore = similarityScore;

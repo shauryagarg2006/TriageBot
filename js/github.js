@@ -9,11 +9,6 @@ var nock = require("nock");
 var data = require("../mock.json");
 var data_post = require("../mock_post_assignees.json");
 
-
-
-
-
-
 function getRepos(userName)
 {
 	var options = {
@@ -40,6 +35,7 @@ function getRepos(userName)
 function getIssues(owner, repo)
 {
      	nock("https://github.ncsu.edu")// This will persist mock interception for lifetime of program.
+          .persist()
      	.get("/api/v3/repos/TriageBotTesting/hqtu/issues?state=all")
      	.reply(200, JSON.stringify(data.issuesList) );
 
@@ -69,6 +65,7 @@ function getIssues(owner, repo)
      {
      	
      	nock("https://github.ncsu.edu")
+          .persist()
      	.filteringPath(function(path) {
      		return "/api/v3/repos/hqtu/TriageBotTesting/issues/10/assignees";
      	})
