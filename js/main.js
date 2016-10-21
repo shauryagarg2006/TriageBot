@@ -115,7 +115,7 @@ function getFreeDevelopers(owner,repo, number)
 		// mock data needs list of issues.
 		github.getIssues(owner,repo).then(function (issues) 
 		{
-
+			console.log(issues);
 			var closedIssues =  _.reject(issues,function(issueVar){ 
 				if(issueVar.state ==='open' || issueVar.assignees === 'null'){
 					return true;
