@@ -13,3 +13,7 @@ This is the [Design document](https://github.ncsu.edu/maalbash/DeveloperTriage/b
 ## Use Cases
 
 The first three use cases of our Developer Triage Bot are described in the [TriageBot_UseCases Document](https://github.ncsu.edu/maalbash/DeveloperTriage/blob/master/TriageBot_UseCases.md)
+
+## Screencast Demo
+
+Our Bot is demonstrated in this demo on youtube and can be accessed in [here](https://youtu.be/gZ3FrKAC1VQ)
