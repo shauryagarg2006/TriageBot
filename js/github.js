@@ -4,10 +4,10 @@ var request = require("request");
 var querystring = require('querystring');
 var token = "token " + process.env.GTOKEN;
 var urlRoot = "https://github.ncsu.edu/api/v3";
-var nock = require("nock");
+//var nock = require("nock");
 // Load mock data
-var data = require("../mock.json");
-var data_post = require("../mock_post_assignees.json");
+// var data = require("../mock.json");
+// var data_post = require("../mock_post_assignees.json");
 
 function getRepos(userName)
 {
@@ -34,15 +34,15 @@ function getRepos(userName)
 
 function getIssues(owner, repo)
 {
-     	nock("https://github.ncsu.edu")// This will persist mock interception for lifetime of program.
-          .persist()
-     	.get("/api/v3/repos/TriageBotTesting/hqtu/issues?state=all")
-     	.reply(200, JSON.stringify(data.issuesList) );
+     	// nock("https://github.ncsu.edu")// This will persist mock interception for lifetime of program.
+      //     .persist()
+     	// .get("/api/v3/repos/TriageBotTesting/hqtu/issues?state=all")
+     	// .reply(200, JSON.stringify(data.issuesList) );
 
      	var url = "/api/v3/repos/" + owner + "/" + repo + "/issues?state=all";
 
      	var options = {
-     		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues?state=all",
+     		url: urlRoot + "/repos/" + repo +"/" + owner + "/issues?state=all",
      		method: 'GET',
      		headers: {
      			"content-type": "application/json",
@@ -64,13 +64,13 @@ function getIssues(owner, repo)
      function assignIssue(owner, repo, issue, assignee)
      {
      	
-     	nock("https://github.ncsu.edu")
-          .persist()
-     	.filteringPath(function(path) {
-     		return "/api/v3/repos/hqtu/TriageBotTesting/issues/10/assignees";
-     	})
-     	.post("/api/v3/repos/hqtu/TriageBotTesting/issues/10/assignees")
-     	.reply(200, JSON.stringify(data_post) );
+     	// nock("https://github.ncsu.edu")
+      //     .persist()
+     	// .filteringPath(function(path) {
+     	// 	return "/api/v3/repos/hqtu/TriageBotTesting/issues/10/assignees";
+     	// })
+     	// .post("/api/v3/repos/hqtu/TriageBotTesting/issues/10/assignees")
+     	// .reply(200, JSON.stringify(data_post) );
 
      	var options = {
      		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues/"+issue+"/assignees",
