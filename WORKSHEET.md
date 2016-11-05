@@ -53,5 +53,6 @@
 | *Use Case 3*  | Help the user with their issue(s)/task(s) | &nbsp;
 | Subflow 1,2   | Two Cases after the Request for Help | [#14](https://github.ncsu.edu/maalbash/DeveloperTriage#14)
 | Subflow 2     | Issues Matching Method       | [#16](https://github.ncsu.edu/maalbash/DeveloperTriage#16)
+| Subflow 2     | Usernames Matching       | [#17](https://github.ncsu.edu/maalbash/DeveloperTriage#17)
 
 
