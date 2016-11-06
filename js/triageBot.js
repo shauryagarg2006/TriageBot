@@ -18,6 +18,8 @@ var bot = controller.spawn({
     token: process.env.BOT_TOKEN
 }).startRTM();
 
+var mainUser;
+
 // Listen for a request for issues to work on (TODO Make this a conversation instead!)
 controller.hears(['give me issues'], 'direct_message, direct_mention, mention', function(bot, message) {
 
@@ -33,9 +35,22 @@ controller.hears(['give me issues'], 'direct_message, direct_mention, mention', 
 
     controller.storage.users.get(message.user, function(err, user) {
         // if (user && user.name) {
-        main.countOpen(repoOwner, repo).then(function (results)
+        mainUser = user;
+        main.getMatchingIssues(repoOwner, repo, "closed").then(function (results)
         {
-          bot.reply(message, results);
+          var string;
+    			if(results.length == 0){
+    				string = "No issues to work on for now!";
+    			} else {
+    				var titles = _.pluck(results, "title");
+    				var urls = _.pluck(results, "html_url");
+    				string = "*Here are some open issues:*\n";
+    				for(var i = 0; i < results.length; i++){
+    					string += (i + 1) + ". "+ titles[i] + ": ";
+    					string += urls[i] + "\n";
+    				}
+    			}
+          bot.reply(message, string);
         });
         bot.startConversation(message, askWhichIssue);
         // }
@@ -45,8 +60,10 @@ controller.hears(['give me issues'], 'direct_message, direct_mention, mention', 
 //
 askWhichIssue = function(response, convo)
 {
+  // console.log(" "+mainUser.git_name);
+  // console.log(" "+user.git_name);
   convo.ask("What issue number do you want to work on?", function(response, convo){
-    main.assignIssueToUser(repoOwner, repo, response.text, repoOwner).then(function(resp){
+    main.assignIssueToUser(repoOwner, repo, response.text, mainUser.git_name).then(function(resp){
       convo.say(resp);
       convo.next();
     });
@@ -73,7 +90,6 @@ controller.hears(['Help me with issue #(.*)', 'help me with issue #(.*)'], 'dire
 
         main.getFreeDevelopers(repoOwner,repo,number).then(function (results)
         {
-
             bot.reply(message, results);
         }).catch(function (e){
             bot.reply(message, e);

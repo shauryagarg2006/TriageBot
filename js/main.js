@@ -6,29 +6,20 @@ var _ = require("underscore");
 var stringSimilarity = require('string-similarity');
 var github = require("./github.js");
 
-
-
-// Return open issues in a user's repo
-function countOpen(user,repo)
+// Return open/closed issues in a user's repo
+function getMatchingIssues(user, repo, state)
 {
 	return new Promise(function (resolve, reject)
 	{
 		github.getIssues(user, repo).then(function (issues)
 		{
-			var states = _.where(issues, { state: "open"});
-			var string;
-			if(states.length == 0){
-				string = "No issues to work on for now!";
+			var states;
+			if(state == "open"){
+				states = _.where(issues, { state: "open"});
 			} else {
-				var titles = _.pluck(states, "title");
-				var urls = _.pluck(states, "html_url");
-				string = "*Here are some open issues:*\n";
-				for(var i = 0; i < states.length; i++){
-					string += (i+1)+". "+ titles[i] + ": ";
-					string += urls[i] + "\n";
-				}
+				states = _.where(issues, { state: "closed"});
 			}
-			resolve(string);
+			resolve(states);
 		});
 	});
 }
@@ -96,12 +87,12 @@ function getIssuesAssigedToAuser(owner,repo,assigneeName)
 
 function getFreeDevelopers(owner,repo, number)
 {
-	return new Promise(function (resolve, reject) 
+	return new Promise(function (resolve, reject)
 	{
 		// mock data needs list of issues.
-		github.getIssues(owner,repo).then(function (issues) 
+		github.getIssues(owner,repo).then(function (issues)
 		{
-			var closedIssues =  _.reject(issues,function(issueVar){ 
+			var closedIssues =  _.reject(issues,function(issueVar){
 				if(issueVar.state ==='open' || issueVar.assignees === 'null'){
 					return true;
 				}
@@ -112,10 +103,10 @@ function getFreeDevelopers(owner,repo, number)
 			var maxsimScore = 0;
 			yissue = _.find(issues, function(issue){return issue.number == number;});
 			if(!yissue){
-				reject("No one can help you with something that does not exists");	
+				reject("No one can help you with something that does not exists");
 			}
 			else{
-				var similarIssues = _.filter(closedIssues,function(issueVar){ 
+				var similarIssues = _.filter(closedIssues,function(issueVar){
 				var similarityScore = stringSimilarity.compareTwoStrings(issueVar.title + " " + issueVar.body, yissue.title + " " + issueVar.body);
 				if(similarityScore > 0.5){
 					if(similarityScore > maxsimScore)
@@ -132,7 +123,6 @@ function getFreeDevelopers(owner,repo, number)
 			var result =[];
 			yissuedl = [];
 
-			
 			if(!topIssue.length){
 				reject("Sorry, couldn't find anyone to help you");
 			}
@@ -147,7 +137,7 @@ function getFreeDevelopers(owner,repo, number)
 				if(!result.length){
 					reject("Sorry, couldn't find anyone to help you");
 				}
-				resolve("I think " + result.join(',') + " could help you");	
+				resolve("I think " + result.join(',') + " could help you");
 			}
 		}
 	});
@@ -156,5 +146,5 @@ function getFreeDevelopers(owner,repo, number)
 
 exports.getIssuesAssigedToAuser = getIssuesAssigedToAuser;
 exports.assignIssueToUser = assignIssueToUser;
-exports.countOpen = countOpen;
+exports.getMatchingIssues = getMatchingIssues;
 exports.getFreeDevelopers=getFreeDevelopers;
