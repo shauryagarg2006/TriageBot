@@ -53,17 +53,12 @@ function getIssuesAssigedToAuser(owner,repo,assigneeName)
 			});
 
 			var issuesForAssignee = _.filter(issuesWithAssignee,function(issueVar){
-
 				var assigneesArray =issueVar.assignees;
-
-
 				for (i = 0; i < assigneesArray.length; i++){
 					if(assigneesArray[i].login == assigneeName){
-
 						return true;
 					}
 				}
-
 				return false;
 			});
 			if(!issuesForAssignee.length){
@@ -79,7 +74,44 @@ function getIssuesAssigedToAuser(owner,repo,assigneeName)
 				result.push('\n');
 			}
 			resolve(result.join('\n'));
+		});
+	});
+}
 
+function getIssuesClosedByUser(owner,repo,userName)
+{
+	return new Promise(function (resolve, reject)
+	{
+		github.getClosedIssues(owner, repo).then(function (issues)
+		{
+			console.log(issues);
+			var issuesWithAssignee =  _.reject(issues,function(issueVar){
+				if(issueVar.assignee == null || issueVar.state != 'closed')
+				{
+					return true;
+				}else
+					return false;
+			});
+
+			var issuesForAssignee = _.filter(issuesWithAssignee,function(issueVar){
+				var assigneesArray = issueVar.assignees;
+				for (i = 0; i < assigneesArray.length; i++){
+					if(assigneesArray[i].login == userName){
+						return true;
+					}
+				}
+				return false;
+			});
+			if(!issuesForAssignee.length){
+				reject("No closed issues found for ");
+			}
+			var result =[];
+			for(i=0;i<issuesForAssignee.length;i++){
+				result.push(issuesForAssignee[i].title);
+				result.push(issuesForAssignee[i].html_url);
+				result.push('\n');
+			}
+			resolve(result.join('\n'));
 		});
 	});
 }
@@ -144,6 +176,7 @@ function getFreeDevelopers(owner,repo, number)
 }
 
 exports.getIssuesAssigedToAuser = getIssuesAssigedToAuser;
+exports.getIssuesClosedByUser = getIssuesClosedByUser;
 exports.assignIssueToUser = assignIssueToUser;
 exports.getMatchingIssues = getMatchingIssues;
 exports.getFreeDevelopers=getFreeDevelopers;

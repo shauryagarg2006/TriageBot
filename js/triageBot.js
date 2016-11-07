@@ -18,7 +18,7 @@ var bot = controller.spawn({
     token: process.env.BOT_TOKEN
 }).startRTM();
 
-var currentUser;
+//var currentUser;
 
 // Listen for a request for issues to work on (TODO Make this a conversation instead!)
 controller.hears(['give me issues'], 'direct_message, direct_mention, mention', function(bot, message) {
@@ -35,7 +35,7 @@ controller.hears(['give me issues'], 'direct_message, direct_mention, mention', 
 
     controller.storage.users.get(message.user, function(err, user) {
         // if (user && user.name) {
-        currentUser = user;
+        //currentUser = user;
         main.getMatchingIssues(repoOwner, repo, "open").then(function (results)
         {
           var string;
@@ -52,21 +52,18 @@ controller.hears(['give me issues'], 'direct_message, direct_mention, mention', 
     			}
           bot.reply(message, string);
         });
-        bot.startConversation(message, askWhichIssue);
+        bot.startConversation(message, function(response, convo)
+        {
+          convo.ask("What issue number do you want to work on?", function(response, convo){
+            main.assignIssueToUser(user, repoOwner, repo, response.text, user.git_name).then(function(resp){
+              convo.say(resp);
+              convo.next();
+            });
+          });
+        });
         // }
     });
 });
-
-// Asks user which issue to work on, where the user must reply with issue number
-askWhichIssue = function(response, convo)
-{
-  convo.ask("What issue number do you want to work on?", function(response, convo){
-    main.assignIssueToUser(currentUser, repoOwner, repo, response.text, currentUser.git_name).then(function(resp){
-      convo.say(resp);
-      convo.next();
-    });
-  });
-}
 
 controller.hears(['deadlines for (.*)', 'Deadline for (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
     var name = message.match[1];
@@ -80,6 +77,18 @@ controller.hears(['deadlines for (.*)', 'Deadline for (.*)'], 'direct_message,di
         });
 
     });
+});
+
+controller.hears(['closed issues by (.*)', 'Closed issues by (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
+    var name = message.match[1];
+    controller.storage.users.get(message.user, function(err, user) {
+        main.getIssuesClosedByUser(repoOwner,repo,name).then(function (results)
+        {
+            bot.reply(message, results);
+        }).catch(function (e){
+            bot.reply(message, e+name);
+        });
+      });
 });
 
 controller.hears(['Help me with issue #(.*)', 'help me with issue #(.*)'], 'direct_message,direct_mention,mention', function(bot, message) {

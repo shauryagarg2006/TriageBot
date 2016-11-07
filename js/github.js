@@ -163,6 +163,7 @@ function getName(owner)
 }
 
 exports.getRepos = getRepos;
+exports.getClosedIssues = getClosedIssues;
 exports.getIssues = getIssues;
 exports.getAnIssue = getAnIssue;
 exports.assignIssue = assignIssue;
