@@ -61,6 +61,30 @@ function getIssues(owner, repo)
 	});
 }
 
+function getClosedIssues(owner, repo)
+{
+	var url = "/api/v3/repos/" + owner + "/" + repo + "/issues?state=closed";
+
+ 	var options = {
+ 		url: urlRoot + "/repos/" + repo +"/" + owner + "/issues?state=closed",
+ 		method: 'GET',
+ 		headers: {
+ 			"content-type": "application/json",
+ 			"Authorization": token
+ 		}
+ 	};
+
+ 	return new Promise(function (resolve, reject)
+ 	{
+		// Send a http request to url and specify a callback that will be called upon its return.
+		request(options, function (error, response, body)
+		{
+			var obj = JSON.parse(body);
+			resolve(obj);
+		});
+	});
+}
+
  function assignIssue(owner, repo, issue, assignee)
  {
 
