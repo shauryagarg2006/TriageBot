@@ -25,12 +25,11 @@ function getMatchingIssues(user, repo, state)
 }
 
 // Assignes a user to an issue
-function assignIssueToUser(owner, repo, issue, assigneeName)
+function assignIssueToUser(currentUser, owner, repo, issue, assigneeName)
 {
 	return new Promise(function(resolve, reject){
 		github.assignIssue(owner, repo, issue, assigneeName).then(function(response){
-			var assignedTo = response.body.assignee.login;
-			var string = "Assigned "+issue+" to "+ (assignedTo == owner ? "you" : assignedTo);
+			var string = "Assigned "+issue+" to "+ (assigneeName == currentUser.git_name ? "you" : assigneeName);
 			resolve(string);
 		});
 	});

@@ -18,7 +18,7 @@ var bot = controller.spawn({
     token: process.env.BOT_TOKEN
 }).startRTM();
 
-var mainUser;
+var currentUser;
 
 // Listen for a request for issues to work on (TODO Make this a conversation instead!)
 controller.hears(['give me issues'], 'direct_message, direct_mention, mention', function(bot, message) {
@@ -35,8 +35,8 @@ controller.hears(['give me issues'], 'direct_message, direct_mention, mention', 
 
     controller.storage.users.get(message.user, function(err, user) {
         // if (user && user.name) {
-        mainUser = user;
-        main.getMatchingIssues(repoOwner, repo, "closed").then(function (results)
+        currentUser = user;
+        main.getMatchingIssues(repoOwner, repo, "open").then(function (results)
         {
           var string;
     			if(results.length == 0){
@@ -57,13 +57,11 @@ controller.hears(['give me issues'], 'direct_message, direct_mention, mention', 
     });
 });
 
-//
+// Asks user which issue to work on, where the user must reply with issue number
 askWhichIssue = function(response, convo)
 {
-  // console.log(" "+mainUser.git_name);
-  // console.log(" "+user.git_name);
   convo.ask("What issue number do you want to work on?", function(response, convo){
-    main.assignIssueToUser(repoOwner, repo, response.text, mainUser.git_name).then(function(resp){
+    main.assignIssueToUser(currentUser, repoOwner, repo, response.text, currentUser.git_name).then(function(resp){
       convo.say(resp);
       convo.next();
     });
@@ -186,32 +184,32 @@ var asking_git_hub_name = function(response, convo, message) {
     {
       pattern: 'yes',
       callback: function(response, convo) {
-                                    // since no further messages are queued after this,
-                                    // the conversation will end naturally with status == 'completed'
-                                    controller.storage.users.get(message.user, function(err, user) {
-                                      user.git_name = convo.extractResponse('git_nickname');
-                                      controller.storage.users.save(user, function(err, id) {
-                                        bot.reply(message, 'Got it! updating you github user name as ' + user.git_name + ' from now on.');
-                                      });
-                                    });
-                                    convo.next();
-                                  }
-                                },
-                                {
-                                  pattern: 'no',
-                                  callback: function(response, convo) {
-                                    // stop the conversation. this will cause it to end with status == 'stopped'
-                                    convo.stop();
-                                  }
-                                },
-                                {
-                                  default: true,
-                                  callback: function(response, convo) {
-                                    convo.repeat();
-                                    convo.next();
-                                  }
-                                }
-                                ]);
+        // since no further messages are queued after this,
+        // the conversation will end naturally with status == 'completed'
+        controller.storage.users.get(message.user, function(err, user) {
+          user.git_name = convo.extractResponse('git_nickname');
+          controller.storage.users.save(user, function(err, id) {
+            bot.reply(message, 'Got it! updating you github user name as ' + user.git_name + ' from now on.');
+          });
+        });
+        convo.next();
+      }
+    },
+    {
+      pattern: 'no',
+      callback: function(response, convo) {
+        // stop the conversation. this will cause it to end with status == 'stopped'
+        convo.stop();
+      }
+    },
+    {
+      default: true,
+      callback: function(response, convo) {
+        convo.repeat();
+        convo.next();
+      }
+    }
+    ]);
 
 convo.next();
 
