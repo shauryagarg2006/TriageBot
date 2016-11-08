@@ -79,6 +79,24 @@ controller.hears(['deadlines for (.*)', 'Deadline for (.*)'], 'direct_message,di
     });
 });
 
+controller.hears(['woah'], 'direct_message,direct_mention,mention', function(bot, message) {
+    var name = message.match[1];
+    controller.storage.users.get(message.user, function(err, user) {
+        main.getMatchingIssues(repoOwner, repo, "closed").then(function (issues)
+        {
+          // sample test first closed with issues with all closed issues
+            main.sortAndCompareIssues([issues[0]], issues).then(function(results)
+            {
+              bot.reply(message, results);
+            }).catch(function (e){
+              bot.reply(message, e+name);
+            });
+        }).catch(function (e){
+            bot.reply(message, e+name);
+        });
+      });
+});
+
 controller.hears(['closed issues by (.*)', 'Closed issues by (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
     var name = message.match[1];
     controller.storage.users.get(message.user, function(err, user) {

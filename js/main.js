@@ -24,6 +24,54 @@ function getMatchingIssues(user, repo, state)
 	});
 }
 
+// Use this to compare two sets of issues, where:
+// issuesA is either the issue that needs help OR
+// issuesA is a list of closed issues by developer who wants open issues and
+// issuesB is the list of open or closed issues to compare against which should
+// be sorted according to match score (0-1) and returned
+function sortAndCompareIssues(issuesA, issuesB)
+{
+
+	return new Promise(function(resolve, reject){
+		var issuesRtn = [];
+		// console.log(issuesA.length);
+		// console.log(issuesB.length);
+		for(var i = 0; i < issuesB.length; i++)
+		{
+			var issuesBLabels = _.pluck(issuesB[i].labels, 'name');
+			for(var j = 0; j < issuesA.length; j++)
+			{
+				var maxScore = 0;
+				var issuesALabels = _.pluck(issuesA[j].labels, 'name');
+				var labelsDiff = _.difference(issuesALabels, issuesBLabels);
+				console.log("comaring "+issuesA[j].title+" with "+issuesB[i].title);
+				if(labelsDiff.length == 0 || (issuesALabels.length == 0 && issuesBLabels.length == 0)){
+					if(maxScore < 1)
+					{
+						maxScore += 0.05;
+					}
+					console.log("label score "+ 0.05);
+				} else {
+					console.log("label score "+0);
+				}
+				var titleScore = stringSimilarity.compareTwoStrings(issuesB[i].title, issuesA[j].title);
+				maxScore += titleScore*0.5;
+				var descScore;
+				console.log("title score "+titleScore);
+				if(issuesA[j].body.length != 0 && issuesB[i].body.length != 0){
+					descScore = stringSimilarity.compareTwoStrings(issuesB[i].body, issuesA[j].body);
+					maxScore += descScore*0.3;
+					console.log("desc score "+descScore);
+				} else if(issuesA[j].body.length == 0 && issuesB[i].body.length == 0){
+					maxScore += 0.3;
+				}
+				console.log("total score for "+i+" is "+maxScore);
+			}
+		}
+		resolve("okay");
+	});
+}
+
 // Assignes a user to an issue
 function assignIssueToUser(currentUser, owner, repo, issue, assigneeName)
 {
@@ -64,6 +112,7 @@ function getIssuesAssigedToAuser(owner,repo,assigneeName)
 			if(!issuesForAssignee.length){
 				reject("No deadlines found for ");
 			}
+			var states;
 
 			var result =[];
 			//TODO Strip date
@@ -84,13 +133,14 @@ function getIssuesClosedByUser(owner,repo,userName)
 	{
 		github.getClosedIssues(owner, repo).then(function (issues)
 		{
-			console.log(issues);
+			// console.log(issues);
 			var issuesWithAssignee =  _.reject(issues,function(issueVar){
 				if(issueVar.assignee == null || issueVar.state != 'closed')
 				{
 					return true;
-				}else
+				} else {
 					return false;
+				}
 			});
 
 			var issuesForAssignee = _.filter(issuesWithAssignee,function(issueVar){
@@ -105,6 +155,7 @@ function getIssuesClosedByUser(owner,repo,userName)
 			if(!issuesForAssignee.length){
 				reject("No closed issues found for ");
 			}
+
 			var result =[];
 			for(i=0;i<issuesForAssignee.length;i++){
 				result.push(issuesForAssignee[i].title);
@@ -180,3 +231,4 @@ exports.getIssuesClosedByUser = getIssuesClosedByUser;
 exports.assignIssueToUser = assignIssueToUser;
 exports.getMatchingIssues = getMatchingIssues;
 exports.getFreeDevelopers=getFreeDevelopers;
+exports.sortAndCompareIssues = sortAndCompareIssues;
