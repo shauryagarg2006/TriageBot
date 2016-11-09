@@ -7,7 +7,7 @@ var stringSimilarity = require('string-similarity');
 var github = require("./github.js");
 
 // Return open/closed issues in a user's repo
-function getMatchingIssues(user, repo, state)
+function getIssues(user, repo, state)
 {
 	return new Promise(function (resolve, reject)
 	{
@@ -178,5 +178,5 @@ function getFreeDevelopers(owner,repo, number)
 exports.getIssuesAssigedToAuser = getIssuesAssigedToAuser;
 exports.getIssuesClosedByUser = getIssuesClosedByUser;
 exports.assignIssueToUser = assignIssueToUser;
-exports.getMatchingIssues = getMatchingIssues;
+exports.getIssues = getIssues;
 exports.getFreeDevelopers=getFreeDevelopers;

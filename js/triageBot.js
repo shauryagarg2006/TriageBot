@@ -36,7 +36,7 @@ controller.hears(['give me issues'], 'direct_message, direct_mention, mention', 
     controller.storage.users.get(message.user, function(err, user) {
         // if (user && user.name) {
         //currentUser = user;
-        main.getMatchingIssues(repoOwner, repo, "open").then(function (results)
+        main.getIssues(repoOwner, repo, "open").then(function (results)
         {
           var string;
     			if(results.length == 0){
