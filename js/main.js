@@ -12,7 +12,7 @@ var TITLE_WEIGHT = 0.5;
 var DESC_WEIGHT = 0.3;
 
 // Return open/closed issues in a user's repo
-function getMatchingIssues(user, repo, state)
+function getIssues(user, repo, state)
 {
 	return new Promise(function (resolve, reject)
 	{
@@ -206,68 +206,45 @@ function getIssuesClosedByUser(owner,repo,userName)
 	});
 }
 
-function getFreeDevelopers(owner,repo, number)
+function getFreeDevelopers(owner, repo, number)
 {
 	return new Promise(function (resolve, reject)
 	{
 		// mock data needs list of issues.
-		github.getIssues(owner,repo).then(function (issues)
+		github.getAnIssue(owner, repo, number).then(function (issue)
 		{
-			var closedIssues =  _.reject(issues,function(issueVar){
-				if(issueVar.state ==='open' || issueVar.assignees === 'null'){
-					return true;
-				}
-				else
-					return false;
-			});
-			var topIssue = [];
-			var maxsimScore = 0;
-			yissue = _.find(issues, function(issue){return issue.number == number;});
-			if(!yissue){
-				reject("No one can help you with something that does not exists");
-			}
-			else{
-				var similarIssues = _.filter(closedIssues,function(issueVar){
-				var similarityScore = stringSimilarity.compareTwoStrings(issueVar.title + " " + issueVar.body, yissue.title + " " + issueVar.body);
-				if(similarityScore > 0.5){
-					if(similarityScore > maxsimScore)
-					{
-						maxsimScore = similarityScore;
-						topIssue.push(issueVar);
+			getIssues(owner, repo, 'closed').then(function(issues){
+				myissue = []
+				myissue.push(issue)
+				sortAndCompareIssues(myissue, issues).then(function(matching_issues){
+					var result =[];
+					myissuedl = [];
+					if(!matching_issues.length){
+						reject("Sorry, couldn't find anyone to help you");
 					}
-					return true;
-				}
-				else{
-					return false;
-				}
+					else{
+						for(i=0;i < issue.assignees.length;i++){
+							myissuedl.push(issue.assignees[i].login);
+					}
+					for(i = 0;i < matching_issues[matching_issues.length - 1].assignees.length;i++){
+						result.push(matching_issues[matching_issues.length - 1].assignees[i].login);
+					}
+					result = _.difference(result, myissuedl);
+					if(!result.length){
+						reject("Sorry, couldn't find anyone to help you");
+					}
+					resolve("I think " + result.join(',') + " could help you");
+					}
+				});
 			});
-			var result =[];
-			yissuedl = [];
-
-			if(!topIssue.length){
-				reject("Sorry, couldn't find anyone to help you");
-			}
-			else{
-				for(i=0;i < yissue.assignees.length;i++){
-					yissuedl.push(yissue.assignees[i].login);
-				}
-				for(i = 0;i < topIssue[topIssue.length - 1].assignees.length;i++){
-					result.push(topIssue[topIssue.length - 1].assignees[i].login);
-				}
-				result = _.difference(result, yissuedl);
-				if(!result.length){
-					reject("Sorry, couldn't find anyone to help you");
-				}
-				resolve("I think " + result.join(',') + " could help you");
-			}
-		}
+		});
 	});
-});
 }
+
 
 exports.getIssuesAssigedToAuser = getIssuesAssigedToAuser;
 exports.getIssuesClosedByUser = getIssuesClosedByUser;
 exports.assignIssueToUser = assignIssueToUser;
-exports.getMatchingIssues = getMatchingIssues;
+exports.getIssues = getIssues;
 exports.getFreeDevelopers=getFreeDevelopers;
 exports.sortAndCompareIssues = sortAndCompareIssues;

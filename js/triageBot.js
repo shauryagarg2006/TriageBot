@@ -82,7 +82,7 @@ controller.hears(['deadlines for (.*)', 'Deadline for (.*)'], 'direct_message,di
 controller.hears(['woah'], 'direct_message,direct_mention,mention', function(bot, message) {
     var name = message.match[1];
     controller.storage.users.get(message.user, function(err, user) {
-        main.getMatchingIssues(repoOwner, repo, "closed").then(function (issues)
+        main.getIssues(repoOwner, repo, "closed").then(function (issues)
         {
           // sample test first closed with issues with all closed issues
             main.sortAndCompareIssues(issues.slice(0, 1), issues).then(function(results)
