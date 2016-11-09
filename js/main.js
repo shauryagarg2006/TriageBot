@@ -36,18 +36,17 @@ function sortAndCompareIssues(issuesA, issuesB)
 {
 	return new Promise(function(resolve, reject){
 		var issuesRtn = [];
-		// console.log(issuesA.length);
-		// console.log(issuesB.length);
+		var issueScore = [];
 		for(var i = 0; i < issuesB.length; i++)
 		{
 			var issuesBLabels = _.pluck(issuesB[i].labels, 'name');
-			// var issueScore = [];
+			var maxScore = 0;
 			for(var j = 0; j < issuesA.length; j++)
 			{
 				var score = 0;
 				var issuesALabels = _.pluck(issuesA[j].labels, 'name');
 				var labelsDiff = _.difference(issuesALabels, issuesBLabels);
-				console.log("comaring "+issuesA[j].title+" with "+issuesB[i].title+" diff: "+labelsDiff);
+				// console.log("comparing "+issuesA[j].title+" with "+issuesB[i].title+" diff: "+labelsDiff);
 				// If all labels match or if both issues don't have labels, add to score
 				if(labelsDiff.length == 0 || (issuesALabels.length == 0 && issuesBLabels.length == 0)){
 					if(issuesALabels.length <= MAX_LABEL)
@@ -60,23 +59,39 @@ function sortAndCompareIssues(issuesA, issuesB)
 						score += (issuesALabels.length-labelsDiff.length)*0.05;
 					}
 				}
-				console.log("label score "+score);
+				// console.log("label score "+score);
 				var titleScore = stringSimilarity.compareTwoStrings(issuesB[i].title, issuesA[j].title);
 				score += titleScore*0.5;
 				var descScore;
-				console.log("title score "+titleScore);
+				// console.log("title score "+titleScore);
 				if(issuesA[j].body.length != 0 && issuesB[i].body.length != 0){
 					descScore = stringSimilarity.compareTwoStrings(issuesB[i].body, issuesA[j].body);
 					score += descScore*0.3;
-					console.log("desc score "+descScore);
+					// console.log("desc score "+descScore);
 				} else if(issuesA[j].body.length == 0 && issuesB[i].body.length == 0){
 					score += 0.3;
 				}
-				// issueScore.push(score);
-				console.log("total score for "+issuesB[i].title+" is "+score);
+				issueScore.push(score);
+				// console.log("total score for "+issuesB[i].title+" is "+score);
 			}
 		}
-		resolve("okay");
+		// console.log("sorted "+issueScore);
+		// Sort the issuesB and return
+		var maxArray = []; // used to exclude the previous max for _.max below
+		while(maxArray.length < issueScore.length)
+		{
+			var max = _.max(issueScore, function(num)
+			{
+				// only return num if it's a new max
+				if(maxArray.indexOf(num) == -1) {
+					return num;
+				}
+			});
+			maxArray.push(max);
+			// add the title of the issue that has the next max score
+			issuesRtn.push(issuesB[issueScore.indexOf(max)]);
+		}
+		resolve(issuesRtn);
 	});
 }
 

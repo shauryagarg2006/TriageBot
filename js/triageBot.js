@@ -87,7 +87,14 @@ controller.hears(['woah'], 'direct_message,direct_mention,mention', function(bot
           // sample test first closed with issues with all closed issues
             main.sortAndCompareIssues([issues[0]], issues).then(function(results)
             {
-              bot.reply(message, results);
+              var titles = _.pluck(results, "title");
+              var urls = _.pluck(results, "html_url");
+              var string = "*Here are some open issues:*\n";
+              for(var i = 0; i < results.length; i++){
+                string += (i + 1) + ". "+ titles[i] + ": ";
+                string += urls[i] + "\n";
+              }
+              bot.reply(message, string);
             }).catch(function (e){
               bot.reply(message, e+name);
             });
