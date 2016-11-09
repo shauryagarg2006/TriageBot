@@ -24,6 +24,25 @@ function getMatchingIssues(user, repo, state)
 	});
 }
 
+
+
+function assignIssueForDeadline(results ,issueNum, assigneeName)
+{
+	return new Promise(function(resolve, reject){
+		var issue;
+		if(issueNum>results.length || issueNum<1){
+			console.log("Inside rejection");
+			reject("Invalid issue number selected");
+		}else{
+			issue = results[issueNum-1].number;
+		}
+		github.assignIssueNew(issue, assigneeName).then(function(response){
+			var string = "Assigned "+issueNum+" to "+ assigneeName;
+			resolve(string);
+		});
+	});
+}
+
 // Assignes a user to an issue
 function assignIssueToUser(currentUser, owner, repo, issue, assigneeName)
 {
@@ -31,6 +50,34 @@ function assignIssueToUser(currentUser, owner, repo, issue, assigneeName)
 		github.assignIssue(owner, repo, issue, assigneeName).then(function(response){
 			var string = "Assigned "+issue+" to "+ (assigneeName == currentUser.git_name ? "you" : assigneeName);
 			resolve(string);
+		});
+	});
+}
+
+function getOpenIssuesForDeadlines(owner,repo)
+{
+	return new Promise(function (resolve, reject)
+	{
+		// mock data needs list of issues.
+		github.getIssues(owner,repo).then(function (issues)
+		{
+			var resSet=[];
+			//TODO add code for fetching open issues
+			var open_issues =  _.reject(issues,function(issueVar){
+				if(issueVar.state!='open')
+				{
+					return true;
+				}else
+				return false;
+			});
+
+			
+			if(!open_issues.length){
+				reject("No Open Issues found");
+			}
+
+			resolve(open_issues);
+
 		});
 	});
 }
@@ -143,6 +190,8 @@ function getFreeDevelopers(owner,repo, number)
 });
 }
 
+exports.assignIssueForDeadline = assignIssueForDeadline;
+exports.getOpenIssuesForDeadlines = getOpenIssuesForDeadlines;
 exports.getIssuesAssigedToAuser = getIssuesAssigedToAuser;
 exports.assignIssueToUser = assignIssueToUser;
 exports.getMatchingIssues = getMatchingIssues;

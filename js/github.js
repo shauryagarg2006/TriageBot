@@ -4,6 +4,8 @@ var request = require("request");
 var querystring = require('querystring');
 var token = "token " + process.env.GTOKEN;
 var urlRoot = "https://github.ncsu.edu/api/v3";
+var repoValue = "hqtu";
+var ownerValue= "TriageBotTesting";
 //var nock = require("nock");
 // Load mock data
 // var data = require("../mock.json");
@@ -61,16 +63,33 @@ function getIssues(owner, repo)
 	});
 }
 
- function assignIssue(owner, repo, issue, assignee)
+function assignIssueNew(issue, assignee)
  {
 
- 	// nock("https://github.ncsu.edu")
-  //     .persist()
- 	// .filteringPath(function(path) {
- 	// 	return "/api/v3/repos/hqtu/TriageBotTesting/issues/10/assignees";
- 	// })
- 	// .post("/api/v3/repos/hqtu/TriageBotTesting/issues/10/assignees")
- 	// .reply(200, JSON.stringify(data_post) );
+	var options = {
+		url: urlRoot + "/repos/" + repoValue +"/" + ownerValue + "/issues/"+issue+"/assignees",
+		method: 'POST',
+		headers: {
+			"content-type": "application/json",
+			"Authorization": token
+		},
+		json: {
+			"assignees" : [assignee]
+		}
+	};
+
+ 	return new Promise(function (resolve, reject)
+ 	{
+		// Send a http request to url and specify a callback that will be called upon its return.
+		request(options, function (error, response, body)
+		{
+			resolve(response);
+		});
+	});
+}
+
+ function assignIssue(owner, repo, issue, assignee)
+ {
 
 	var options = {
 		url: urlRoot + "/repos/" + repo +"/" + owner + "/issues/"+issue+"/assignees",
@@ -142,3 +161,4 @@ exports.getRepos = getRepos;
 exports.getIssues = getIssues;
 exports.getAnIssue = getAnIssue;
 exports.assignIssue = assignIssue;
+exports.assignIssueNew = assignIssueNew;
