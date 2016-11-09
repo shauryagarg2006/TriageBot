@@ -47,12 +47,12 @@
 | Deliverable   | Item/Status   |  Issues/Tasks
 | ------------- | ------------  |  ------------
 | *Use Case 1*  | Give the user a list of open issues to work on | &nbsp;
-| Subflow 2     | Assign Issues | [#24](https://github.ncsu.edu/maalbash/DeveloperTriage/issues/24), [#21](https://github.ncsu.edu/maalbash/DeveloperTriage/issues/21)
+| Subflow 2     | Assign Issues | [#21](https://github.ncsu.edu/maalbash/DeveloperTriage/issues/21), [#24](https://github.ncsu.edu/maalbash/DeveloperTriage/issues/24)
 | *Use Case 2*  | Give the user a requested person’s</br>(id of the person) current deadlines | &nbsp;
 | Subflow 2     | Reassign/Assign More Issues | [#13]( https://github.ncsu.edu/maalbash/DeveloperTriage/issues/13)
 | *Use Case 3*  | Help the user with their issue(s)/task(s) | &nbsp;
 | Subflow 1,2   | Two Cases after the Request for Help | [#14](https://github.ncsu.edu/maalbash/DeveloperTriage/issues/14)
 | Subflow 2     | Issues Matching Method       | [#16](https://github.ncsu.edu/maalbash/DeveloperTriage/issues/16)
-| Subflow 2     | Usernames Matching       | [#26](https://github.ncsu.edu/maalbash/DeveloperTriage/issues/26), [#17](https://github.ncsu.edu/maalbash/DeveloperTriage/issues/17)
+| Subflow 2     | Usernames Matching       | [#17](https://github.ncsu.edu/maalbash/DeveloperTriage/issues/17), [#26](https://github.ncsu.edu/maalbash/DeveloperTriage/issues/26)
 
 
