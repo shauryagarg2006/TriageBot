@@ -21,7 +21,7 @@ var bot = controller.spawn({
 //var currentUser;
 
 // Listen for a request for issues to work on (TODO Make this a conversation instead!)
-controller.hears(['give me issues'], 'direct_message, direct_mention, mention', function(bot, message) {
+/*controller.hears(['give me issues'], 'direct_message, direct_mention, mention', function(bot, message) {
 
     // bot.api.reactions.add({
     //     timestamp: message.ts,
@@ -63,6 +63,47 @@ controller.hears(['give me issues'], 'direct_message, direct_mention, mention', 
         });
         // }
     });
+});*/
+
+controller.hears(['give me issues'], 'direct_message, direct_mention, mention', function(bot, message) {
+
+    controller.storage.users.get(message.user, function(err, user)   {
+        main.getIssues(repoOwner, repo, "open").then(function(openI)    {
+
+          var closedI = main.getIssuesClosedByUser(repoOwner,repo,user.git_name);
+
+          main.sortAndCompareIssues(closedI, openI).then(function(matchingR)   {
+                  console.log("In sortAndCompareIssues!");
+                  var string;
+            			if(matchingR.length == 0){
+            				string = "No issues to work on for now!";
+            			} else {
+            				var titles = _.pluck(matchingR, "title");
+            				var urls = _.pluck(matchingR, "html_url");
+            				string = "*Here are some open issues:*\n";
+            				for(var i = 0; i < matchingR.length; i++){
+            					string += (i + 1) + ". "+ titles[i] + ": ";
+            					string += urls[i] + "\n";
+            				}
+            			}
+                  bot.reply(message, string);
+                  console.log("hello");
+          }).catch(function (e){
+                  bot.reply(message, e);});
+        }).catch(function (e){
+                bot.reply(message, e);});
+
+
+        bot.startConversation(message, function(response, convo){
+          convo.ask("What issue number do you want to work on?", function(response, convo){
+            main.assignIssueToUser(user, repoOwner, repo, response.text, user.git_name).then(function(resp){
+              convo.say(resp);
+              convo.next();
+            });
+          });
+        });
+
+    });
 });
 
 controller.hears(['deadlines for (.*)', 'Deadline for (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
@@ -82,7 +123,7 @@ controller.hears(['deadlines for (.*)', 'Deadline for (.*)'], 'direct_message,di
 controller.hears(['woah'], 'direct_message,direct_mention,mention', function(bot, message) {
     var name = message.match[1];
     controller.storage.users.get(message.user, function(err, user) {
-        main.getMatchingIssues(repoOwner, repo, "closed").then(function (issues)
+        main.getIssues(repoOwner, repo, "closed").then(function (issues)
         {
           // sample test first closed with issues with all closed issues
             main.sortAndCompareIssues(issues.slice(0, 1), issues).then(function(results)
