@@ -106,7 +106,11 @@ function sortAndCompareIssues(issuesA, issuesB)
 				// add the title of the issue that has the next max score
 				issuesRtn.push(issuesB[issueScore.indexOf(max)]);
 			}
-			resolve(issuesRtn);
+			if(issuesRtn.length >= 5){
+				resolve(issuesRtn.splice(0, 5));
+			} else {
+				resolve(issuesRtn);
+			}
 		}
 	});
 }
