@@ -30,14 +30,13 @@ function assignIssueForDeadline(results ,issueNum, assigneeName)
 {
 	return new Promise(function(resolve, reject){
 		var issue;
-		if(issueNum>results.length || issueNum<1){
-			console.log("Inside rejection");
+		if(issueNum>results.length || issueNum<1 || isNaN(issueNum)){
 			reject("Invalid issue number selected");
 		}else{
 			issue = results[issueNum-1].number;
 		}
 		github.assignIssueNew(issue, assigneeName).then(function(response){
-			var string = "Assigned "+issueNum+" to "+ assigneeName;
+			var string = "Assigned Issue #"+issueNum+" To "+ assigneeName+"\nTitle: "+ results[issueNum-1].title;
 			resolve(string);
 		});
 	});
@@ -70,14 +69,10 @@ function getOpenIssuesForDeadlines(owner,repo)
 				}else
 				return false;
 			});
-
-			
 			if(!open_issues.length){
 				reject("No Open Issues found");
 			}
-
 			resolve(open_issues);
-
 		});
 	});
 }
@@ -86,11 +81,11 @@ function getIssuesAssigedToAuser(owner,repo,assigneeName)
 {
 	return new Promise(function (resolve, reject)
 	{
-		// mock data needs list of issues.
+		// Fetching all the issues from github using rest api.
 		github.getIssues(owner,repo).then(function (issues)
 		{
 			var resSet=[];
-			//TODO add code for fetching open issues
+			//removing issues which are not open OR dont have a milestone OR does not have a assignee
 			var issuesWithAssignee =  _.reject(issues,function(issueVar){
 				if(issueVar.assignee == null || issueVar.state!='open' || issueVar.milestone == null)
 				{
@@ -99,6 +94,7 @@ function getIssuesAssigedToAuser(owner,repo,assigneeName)
 				return false;
 			});
 
+			//Filter out the issues which are assigned to the user we are looking for
 			var issuesForAssignee = _.filter(issuesWithAssignee,function(issueVar){
 
 				var assigneesArray =issueVar.assignees;
@@ -113,6 +109,8 @@ function getIssuesAssigedToAuser(owner,repo,assigneeName)
 
 				return false;
 			});
+
+			//If not even a single element in our results - > reject the promise
 			if(!issuesForAssignee.length){
 				reject("No deadlines found for ");
 			}
@@ -120,15 +118,16 @@ function getIssuesAssigedToAuser(owner,repo,assigneeName)
 			var result =[];
 			//TODO Strip date
 			for(i=0;i<issuesForAssignee.length;i++){
-				result.push(issuesForAssignee[i].title);
+				result.push(i+1+") "+issuesForAssignee[i].title);
 				result.push(issuesForAssignee[i].html_url);
-				result.push('Deadline- '+issuesForAssignee[i].milestone.due_on);
+				result.push('Deadline- '+ new Date(issuesForAssignee[i].milestone.due_on));
+				console.log(typeof issuesForAssignee[i].milestone.due_on);
 				result.push('\n');
 			}
 			resolve(result.join('\n'));
 
 		});
-	});
+});
 }
 
 function getFreeDevelopers(owner,repo, number)
@@ -153,40 +152,40 @@ function getFreeDevelopers(owner,repo, number)
 			}
 			else{
 				var similarIssues = _.filter(closedIssues,function(issueVar){
-				var similarityScore = stringSimilarity.compareTwoStrings(issueVar.title + " " + issueVar.body, yissue.title + " " + issueVar.body);
-				if(similarityScore > 0.5){
-					if(similarityScore > maxsimScore)
-					{
-						maxsimScore = similarityScore;
-						topIssue.push(issueVar);
+					var similarityScore = stringSimilarity.compareTwoStrings(issueVar.title + " " + issueVar.body, yissue.title + " " + issueVar.body);
+					if(similarityScore > 0.5){
+						if(similarityScore > maxsimScore)
+						{
+							maxsimScore = similarityScore;
+							topIssue.push(issueVar);
+						}
+						return true;
 					}
-					return true;
-				}
-				else{
-					return false;
-				}
-			});
-			var result =[];
-			yissuedl = [];
+					else{
+						return false;
+					}
+				});
+				var result =[];
+				yissuedl = [];
 
-			if(!topIssue.length){
-				reject("Sorry, couldn't find anyone to help you");
-			}
-			else{
-				for(i=0;i < yissue.assignees.length;i++){
-					yissuedl.push(yissue.assignees[i].login);
-				}
-				for(i = 0;i < topIssue[topIssue.length - 1].assignees.length;i++){
-					result.push(topIssue[topIssue.length - 1].assignees[i].login);
-				}
-				result = _.difference(result, yissuedl);
-				if(!result.length){
+				if(!topIssue.length){
 					reject("Sorry, couldn't find anyone to help you");
 				}
-				resolve("I think " + result.join(',') + " could help you");
+				else{
+					for(i=0;i < yissue.assignees.length;i++){
+						yissuedl.push(yissue.assignees[i].login);
+					}
+					for(i = 0;i < topIssue[topIssue.length - 1].assignees.length;i++){
+						result.push(topIssue[topIssue.length - 1].assignees[i].login);
+					}
+					result = _.difference(result, yissuedl);
+					if(!result.length){
+						reject("Sorry, couldn't find anyone to help you");
+					}
+					resolve("I think " + result.join(',') + " could help you");
+				}
 			}
-		}
-	});
+		});
 });
 }
 

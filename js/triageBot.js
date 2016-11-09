@@ -61,22 +61,15 @@ askWhichIssue = function(response, convo)
 
 var deadline_conversation_asking_for_issueNumber = function(response, convo,results,name,message)
 {
-
   convo.ask("What issue do you want to assign to "+name+" ?",function(response, convo) {
-   console.log("Entered Issue Number - "+response.text);
    main.assignIssueForDeadline(results,response.text,name).then(function(resp){
-    console.log("Entered Issue Number II - "+response.text);
     bot.reply(message,resp);
     convo.next();
   }).catch(function (e){
-    
-    bot.reply(message,"Invalid response please enter again!");
-      
+    bot.reply(message,"Invalid response!");
       convo.repeat();
       convo.next();
     });;
-
-
 });
 
 }
@@ -86,10 +79,7 @@ var deadline_conversation_asking_for_assignment = function(response, convo,name,
 {
   main.getOpenIssuesForDeadlines(repoOwner,repo).then(function (results)
   {
-
     var result =[];
-      //TODO Strip date
-      console.log(results.length+" -LENGTH");
       for(i=0;i<results.length;i++){
         result.push(i+1+" ) "+results[i].title);
         result.push(results[i].html_url);
@@ -122,7 +112,8 @@ var deadline_conversation_asking_for_assignment = function(response, convo,name,
                                 }
                                 ]);
     }).catch(function (e){
-      convo.say(e);
+      //No Deadline found as well as no open issues
+      bot.reply(message,"No Deadlines found!");
       convo.stop();
     });
   }
@@ -130,13 +121,11 @@ var deadline_conversation_asking_for_assignment = function(response, convo,name,
   controller.hears(['deadlines for (.*)', 'Deadline for (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
     var name = message.match[1];
     controller.storage.users.get(message.user, function(err, user) {
-
       main.getIssuesAssigedToAuser(repoOwner,repo,name).then(function (results)
       {
         bot.reply(message, results);
       }).catch(function (e){
-     //   bot.reply(message, e+name);
-     bot.startConversation(message, function(err,convo){
+      bot.startConversation(message, function(err,convo){
       deadline_conversation_asking_for_assignment(err,convo,name,message);
 
     });
