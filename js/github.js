@@ -134,9 +134,9 @@ function getAnIssue(owner, repo, number)
 		// Send a http request to url and specify a callback that will be called upon its return.
 		request(options, function (error, response, body)
 		{
-			console.log(options.url)
 			var obj = JSON.parse(body);
 			resolve(obj);
+
 		});
 	});
 }

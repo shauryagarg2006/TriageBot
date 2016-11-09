@@ -206,13 +206,23 @@ function getIssuesClosedByUser(owner,repo,userName)
 	});
 }
 
+// Use this to get gitnames of developers that could help you with a particular issue
 function getFreeDevelopers(owner, repo, number)
 {
 	return new Promise(function (resolve, reject)
 	{
-		// mock data needs list of issues.
 		github.getAnIssue(owner, repo, number).then(function (issue)
 		{
+			if(issue.state === undefined)
+			{
+				reject("No one can help you with something that does not exists");
+				return	
+			}
+			if(issue.state === 'closed')
+			{
+				reject("Hey buddy, you don't need any help, this issue is already closed");
+				return
+			}
 			getIssues(owner, repo, 'closed').then(function(issues){
 				myissue = []
 				myissue.push(issue)
