@@ -106,7 +106,11 @@ function sortAndCompareIssues(issuesA, issuesB)
 				// add the title of the issue that has the next max score
 				issuesRtn.push(issuesB[issueScore.indexOf(max)]);
 			}
-			resolve(issuesRtn);
+			if(issuesRtn.length >= 5){
+				resolve(issuesRtn.splice(0, 5));
+			} else {
+				resolve(issuesRtn);
+			}
 		}
 	});
 }
@@ -195,13 +199,14 @@ function getIssuesClosedByUser(owner,repo,userName)
 				reject("No closed issues found for ");
 			}
 
-			var result =[];
-			for(i=0;i<issuesForAssignee.length;i++){
-				result.push(issuesForAssignee[i].title);
-				result.push(issuesForAssignee[i].html_url);
-				result.push('\n');
-			}
-			resolve(result.join('\n'));
+			// var result =[];
+			// for(i=0;i<issuesForAssignee.length;i++){
+			// 	result.push(issuesForAssignee[i].title);
+			// 	result.push(issuesForAssignee[i].html_url);
+			// 	result.push('\n');
+			// }
+			// resolve(result.join('\n'));
+			resolve(issuesForAssignee);
 		});
 	});
 }

@@ -21,7 +21,7 @@ var bot = controller.spawn({
 //var currentUser;
 
 // Listen for a request for issues to work on (TODO Make this a conversation instead!)
-controller.hears(['give me issues'], 'direct_message, direct_mention, mention', function(bot, message) {
+/*controller.hears(['give me issues'], 'direct_message, direct_mention, mention', function(bot, message) {
 
     // bot.api.reactions.add({
     //     timestamp: message.ts,
@@ -36,7 +36,7 @@ controller.hears(['give me issues'], 'direct_message, direct_mention, mention', 
     controller.storage.users.get(message.user, function(err, user) {
         // if (user && user.name) {
         //currentUser = user;
-        main.getMatchingIssues(repoOwner, repo, "open").then(function (results)
+        main.getIssues(repoOwner, repo, "open").then(function (results)
         {
           var string;
     			if(results.length == 0){
@@ -62,6 +62,48 @@ controller.hears(['give me issues'], 'direct_message, direct_mention, mention', 
           });
         });
         // }
+    });
+});*/
+
+controller.hears(['give me issues'], 'direct_message, direct_mention, mention', function(bot, message) {
+
+    controller.storage.users.get(message.user, function(err, user) {
+        main.getIssues(repoOwner, repo, "open").then(function(openI) {
+          main.getIssuesClosedByUser(repoOwner, repo, user.git_name).then(function(result) {
+              main.sortAndCompareIssues(result, openI).then(function(matchingR) {
+                      // console.log("In sortAndCompareIssues! ");
+                      var string;
+                			if(matchingR.length == 0){
+                				string = "No issues to work on for now!";
+                			} else {
+                				var titles = _.pluck(matchingR, "title");
+                				var urls = _.pluck(matchingR, "html_url");
+                				string = "*Here are some open issues:*\n";
+                				for(var i = 0; i < matchingR.length; i++){
+                					string += (i + 1) + ". "+ titles[i] + ": ";
+                					string += urls[i] + "\n";
+                				}
+                			}
+                      bot.reply(message, string);
+                    });
+          }).catch(function (e){
+                bot.reply(message, e);});
+        }).catch(function (e){
+              bot.reply(message, e);
+      }).catch(function (e){
+            bot.reply(message, e);
+      });
+
+
+      bot.startConversation(message, function(response, convo){
+        convo.ask("What issue number do you want to work on?", function(response, convo){
+          main.assignIssueToUser(user, repoOwner, repo, response.text, user.git_name).then(function(resp){
+            convo.say(resp);
+            convo.next();
+          });
+        });
+      });
+
     });
 });
 
