@@ -6,6 +6,8 @@ var _ = require("underscore");
 var stringSimilarity = require('string-similarity');
 var github = require("./github.js");
 
+var MAX_LABEL = 4;
+
 // Return open/closed issues in a user's repo
 function getMatchingIssues(user, repo, state)
 {
@@ -27,11 +29,11 @@ function getMatchingIssues(user, repo, state)
 // Use this to compare two sets of issues, where:
 // issuesA is either the issue that needs help OR
 // issuesA is a list of closed issues by developer who wants open issues and
-// issuesB is the list of open or closed issues to compare against which should
-// be sorted according to match score (0-1) and returned
+// issuesB is the list of open or closed issues to compare against which will
+// be sorted according by comparing each issue on issueA for highest score
+// issuesB will then be returned once sorted from highest match to lowest
 function sortAndCompareIssues(issuesA, issuesB)
 {
-
 	return new Promise(function(resolve, reject){
 		var issuesRtn = [];
 		// console.log(issuesA.length);
@@ -39,33 +41,39 @@ function sortAndCompareIssues(issuesA, issuesB)
 		for(var i = 0; i < issuesB.length; i++)
 		{
 			var issuesBLabels = _.pluck(issuesB[i].labels, 'name');
+			// var issueScore = [];
 			for(var j = 0; j < issuesA.length; j++)
 			{
-				var maxScore = 0;
+				var score = 0;
 				var issuesALabels = _.pluck(issuesA[j].labels, 'name');
 				var labelsDiff = _.difference(issuesALabels, issuesBLabels);
-				console.log("comaring "+issuesA[j].title+" with "+issuesB[i].title);
+				console.log("comaring "+issuesA[j].title+" with "+issuesB[i].title+" diff: "+labelsDiff);
+				// If all labels match or if both issues don't have labels, add to score
 				if(labelsDiff.length == 0 || (issuesALabels.length == 0 && issuesBLabels.length == 0)){
-					if(maxScore < 1)
+					if(issuesALabels.length <= MAX_LABEL)
 					{
-						maxScore += 0.05;
+						score += (issuesALabels.length)*0.05;
 					}
-					console.log("label score "+ 0.05);
 				} else {
-					console.log("label score "+0);
+					if(labelsDiff.length <= MAX_LABEL)
+					{
+						score += (issuesALabels.length-labelsDiff.length)*0.05;
+					}
 				}
+				console.log("label score "+score);
 				var titleScore = stringSimilarity.compareTwoStrings(issuesB[i].title, issuesA[j].title);
-				maxScore += titleScore*0.5;
+				score += titleScore*0.5;
 				var descScore;
 				console.log("title score "+titleScore);
 				if(issuesA[j].body.length != 0 && issuesB[i].body.length != 0){
 					descScore = stringSimilarity.compareTwoStrings(issuesB[i].body, issuesA[j].body);
-					maxScore += descScore*0.3;
+					score += descScore*0.3;
 					console.log("desc score "+descScore);
 				} else if(issuesA[j].body.length == 0 && issuesB[i].body.length == 0){
-					maxScore += 0.3;
+					score += 0.3;
 				}
-				console.log("total score for "+i+" is "+maxScore);
+				// issueScore.push(score);
+				console.log("total score for "+issuesB[i].title+" is "+score);
 			}
 		}
 		resolve("okay");
