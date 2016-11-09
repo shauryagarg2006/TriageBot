@@ -40,61 +40,74 @@ function sortAndCompareIssues(issuesA, issuesB)
 	return new Promise(function(resolve, reject){
 		var issuesRtn = [];
 		var issueScore = [];
-		for(var i = 0; i < issuesB.length; i++)
-		{
-			var issuesBLabels = _.pluck(issuesB[i].labels, 'name');
-			var maxScore = 0;
-			for(var j = 0; j < issuesA.length; j++)
+
+		var issuesATitles = _.pluck(issuesA, 'title');
+		var issuesBTitles = _.pluck(issuesB, 'title');
+
+		if(_.difference(issuesBTitles, issuesATitles) == 0){
+			resolve(issuesB);
+		} else {
+			// console.log("diff: "+_.difference(issuesBTitles, issuesATitles));
+			for(var i = 0; i < issuesB.length; i++)
 			{
-				var score = 0;
-				var issuesALabels = _.pluck(issuesA[j].labels, 'name');
-				var labelsDiff = _.difference(issuesALabels, issuesBLabels);
-				// console.log("comparing "+issuesA[j].title+" with "+issuesB[i].title+" diff: "+labelsDiff);
-				// If all labels match or if both issues don't have labels, add to score
-				if(labelsDiff.length == 0 || (issuesALabels.length == 0 && issuesBLabels.length == 0)){
-					if(issuesALabels.length <= MAX_LABEL)
-					{
-						score += (issuesALabels.length)*LABEL_WEIGHT;
+				var issuesBLabels = _.pluck(issuesB[i].labels, 'name');
+				var maxScore = 0;
+				for(var j = 0; j < issuesA.length; j++)
+				{
+					var score = 0;
+					var issuesALabels = _.pluck(issuesA[j].labels, 'name');
+					var labelsDiff = _.difference(issuesALabels, issuesBLabels);
+					// console.log("comparing "+issuesA[j].title+" with "+issuesB[i].title+" diff: "+labelsDiff);
+					// If all labels match or if both issues don't have labels, add to score
+					if(labelsDiff.length == 0 || (issuesALabels.length == 0 && issuesBLabels.length == 0)){
+						if(issuesALabels.length <= MAX_LABEL)
+						{
+							score += (issuesALabels.length)*LABEL_WEIGHT;
+						}
+					} else {
+						if(labelsDiff.length <= MAX_LABEL)
+						{
+							score += (issuesALabels.length-labelsDiff.length)*LABEL_WEIGHT;
+						}
 					}
-				} else {
-					if(labelsDiff.length <= MAX_LABEL)
-					{
-						score += (issuesALabels.length-labelsDiff.length)*LABEL_WEIGHT;
+					// console.log("label score "+score);
+					var titleScore = stringSimilarity.compareTwoStrings(issuesB[i].title, issuesA[j].title);
+					score += titleScore*TITLE_WEIGHT;
+					var descScore;
+					// console.log("title score "+titleScore);
+					if(issuesA[j].body.length != 0 && issuesB[i].body.length != 0){
+						descScore = stringSimilarity.compareTwoStrings(issuesB[i].body, issuesA[j].body);
+						score += descScore*DESC_WEIGHT;
+						// console.log("desc score "+descScore);
+					} else if(issuesA[j].body.length == 0 && issuesB[i].body.length == 0){
+						score += DESC_WEIGHT;
 					}
+					if(maxScore < score)
+					{
+						maxScore = score;
+					}
+					// console.log("total score for "+issuesB[i].title+" is "+score);
 				}
-				// console.log("label score "+score);
-				var titleScore = stringSimilarity.compareTwoStrings(issuesB[i].title, issuesA[j].title);
-				score += titleScore*TITLE_WEIGHT;
-				var descScore;
-				// console.log("title score "+titleScore);
-				if(issuesA[j].body.length != 0 && issuesB[i].body.length != 0){
-					descScore = stringSimilarity.compareTwoStrings(issuesB[i].body, issuesA[j].body);
-					score += descScore*DESC_WEIGHT;
-					// console.log("desc score "+descScore);
-				} else if(issuesA[j].body.length == 0 && issuesB[i].body.length == 0){
-					score += DESC_WEIGHT;
-				}
-				issueScore.push(score);
-				// console.log("total score for "+issuesB[i].title+" is "+score);
+				issueScore.push(maxScore);
 			}
-		}
-		// console.log("sorted "+issueScore);
-		// Sort the issuesB and return
-		var maxArray = []; // used to exclude the previous max for _.max below
-		while(maxArray.length < issueScore.length)
-		{
-			var max = _.max(issueScore, function(num)
+			// console.log("sorted "+issueScore);
+			// Sort the issuesB and return
+			var maxArray = []; // used to exclude the previous max for _.max below
+			while(maxArray.length < issueScore.length)
 			{
-				// only return num if it's a new max
-				if(maxArray.indexOf(num) == -1) {
-					return num;
-				}
-			});
-			maxArray.push(max);
-			// add the title of the issue that has the next max score
-			issuesRtn.push(issuesB[issueScore.indexOf(max)]);
+				var max = _.max(issueScore, function(num)
+				{
+					// only return num if it's a new max
+					if(maxArray.indexOf(num) == -1) {
+						return num;
+					}
+				});
+				maxArray.push(max);
+				// add the title of the issue that has the next max score
+				issuesRtn.push(issuesB[issueScore.indexOf(max)]);
+			}
+			resolve(issuesRtn);
 		}
-		resolve(issuesRtn);
 	});
 }
 

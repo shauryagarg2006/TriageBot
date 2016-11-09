@@ -85,7 +85,7 @@ controller.hears(['woah'], 'direct_message,direct_mention,mention', function(bot
         main.getMatchingIssues(repoOwner, repo, "closed").then(function (issues)
         {
           // sample test first closed with issues with all closed issues
-            main.sortAndCompareIssues([issues[0]], issues).then(function(results)
+            main.sortAndCompareIssues(issues.slice(0, 1), issues).then(function(results)
             {
               var titles = _.pluck(results, "title");
               var urls = _.pluck(results, "html_url");
