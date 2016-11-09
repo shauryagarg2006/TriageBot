@@ -121,7 +121,7 @@ function getClosedIssues(owner, repo)
 function getAnIssue(owner, repo, number)
 {
  	var options = {
- 		url: urlRoot + "/repos/" + owner +"/" + repo + "/issues/"+number,
+ 		url: urlRoot + "/repos/" + repo +"/" + owner + "/issues/"+number,
  		method: 'GET',
  		headers: {
  			"content-type": "application/json",
@@ -134,6 +134,7 @@ function getAnIssue(owner, repo, number)
 		// Send a http request to url and specify a callback that will be called upon its return.
 		request(options, function (error, response, body)
 		{
+			console.log(options.url)
 			var obj = JSON.parse(body);
 			resolve(obj);
 		});
