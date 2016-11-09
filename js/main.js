@@ -7,6 +7,9 @@ var stringSimilarity = require('string-similarity');
 var github = require("./github.js");
 
 var MAX_LABEL = 4;
+var LABEL_WEIGHT = 0.05;
+var TITLE_WEIGHT = 0.5;
+var DESC_WEIGHT = 0.3;
 
 // Return open/closed issues in a user's repo
 function getMatchingIssues(user, repo, state)
@@ -51,25 +54,25 @@ function sortAndCompareIssues(issuesA, issuesB)
 				if(labelsDiff.length == 0 || (issuesALabels.length == 0 && issuesBLabels.length == 0)){
 					if(issuesALabels.length <= MAX_LABEL)
 					{
-						score += (issuesALabels.length)*0.05;
+						score += (issuesALabels.length)*LABEL_WEIGHT;
 					}
 				} else {
 					if(labelsDiff.length <= MAX_LABEL)
 					{
-						score += (issuesALabels.length-labelsDiff.length)*0.05;
+						score += (issuesALabels.length-labelsDiff.length)*LABEL_WEIGHT;
 					}
 				}
 				// console.log("label score "+score);
 				var titleScore = stringSimilarity.compareTwoStrings(issuesB[i].title, issuesA[j].title);
-				score += titleScore*0.5;
+				score += titleScore*TITLE_WEIGHT;
 				var descScore;
 				// console.log("title score "+titleScore);
 				if(issuesA[j].body.length != 0 && issuesB[i].body.length != 0){
 					descScore = stringSimilarity.compareTwoStrings(issuesB[i].body, issuesA[j].body);
-					score += descScore*0.3;
+					score += descScore*DESC_WEIGHT;
 					// console.log("desc score "+descScore);
 				} else if(issuesA[j].body.length == 0 && issuesB[i].body.length == 0){
-					score += 0.3;
+					score += DESC_WEIGHT;
 				}
 				issueScore.push(score);
 				// console.log("total score for "+issuesB[i].title+" is "+score);
