@@ -63,19 +63,21 @@ var deadline_conversation_asking_for_issueNumber = function(response, convo,resu
 {
 
   convo.ask("What issue do you want to assign to "+name+" ?",function(response, convo) {
-
-    main.assignIssueForDeadline(results,response.text,name).then(function(resp){
-      convo.say(resp);
+   console.log("Entered Issue Number - "+response.text);
+   main.assignIssueForDeadline(results,response.text,name).then(function(resp){
+    console.log("Entered Issue Number II - "+response.text);
+    bot.reply(message,resp);
+    convo.next();
+  }).catch(function (e){
+    
+    bot.reply(message,"Invalid response please enter again!");
+      
+      convo.repeat();
       convo.next();
-    }).catch(function (e){
-      console.log("catch");
-      bot.reply(message,e);
-
-     // convo.repeat();
     });;
 
 
-  });
+});
 
 }
 
