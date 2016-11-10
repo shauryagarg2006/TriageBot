@@ -22,4 +22,4 @@ The details about our updates of this milestone is included in the [SERVICE Docu
 
 Our Bot Milestone is demonstrated in this demo on youtube and can be accessed in [here](https://youtu.be/gZ3FrKAC1VQ).
 
-Our Service Milestone is demonstrated in this demo on youtube and can be accessed in [here](https://youtu.be/gZ3FrKAC1VQ).
+Our Service Milestone is demonstrated in this demo on youtube and can be accessed in [here](https://youtu.be/xcyAL6UnUK8).
