@@ -4,22 +4,22 @@ TriageBot is a bot designed to help reduce the time wasted in manually looking u
 
 ### Work Sheet
 
-The timeline and progress of the project is in the [Worksheet Document](https://github.ncsu.edu/maalbash/DeveloperTriage/blob/master/WORKSHEET.md)
+The timeline and progress of the project is in the [Worksheet Document](documents/WORKSHEET.md)
 
 ### Design Document
 
-This is the [Design document](https://github.ncsu.edu/maalbash/DeveloperTriage/blob/master/FIXDESIGN.md "Design.md") for the project.
+This is the [Design document](documents/FIXDESIGN.md "Design.md") for the project.
 
 ### Use Cases
 
-The first three use cases of our Developer Triage Bot are described in the [TriageBot_UseCases Document](https://github.ncsu.edu/maalbash/DeveloperTriage/blob/master/TriageBot_UseCases.md)
+The first three use cases of our Developer Triage Bot are described in the [TriageBot_UseCases Document](documents/TriageBot_UseCases.md)
 
 ### Service 
 
-The details about our updates of this milestone is included in the [SERVICE Document](DeveloperTriage/SERVICE.md)
+The details about our updates of this milestone is included in the [SERVICE Document](documents/SERVICE.md).
 
 ### Screencast Demo
 
 Our Bot Milestone is demonstrated in this demo on youtube and can be accessed in [here](https://youtu.be/gZ3FrKAC1VQ).
 
-Our Service Milestone is demonstrated in this demo on youtube and can be accessed in [here](https://youtu.be/gZ3FrKAC1VQ).
+Our Service Milestone is demonstrated in this demo on youtube and can be accessed in [here](https://youtu.be/xcyAL6UnUK8).
