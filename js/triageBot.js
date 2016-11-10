@@ -18,46 +18,44 @@ var bot = controller.spawn({
   token: process.env.BOT_TOKEN
 }).startRTM();
 
-var currentUser;
-
-// Listen for a request for issues to work on (TODO Make this a conversation instead!)
 controller.hears(['give me issues'], 'direct_message, direct_mention, mention', function(bot, message) {
 
-
-  controller.storage.users.get(message.user, function(err, user) {
-        // if (user && user.name) {
-          currentUser = user;
-          main.getMatchingIssues(repoOwner, repo, "open").then(function (results)
-          {
-            var string;
-            if(results.length == 0){
-              string = "No issues to work on for now!";
-            } else {
-              var titles = _.pluck(results, "title");
-              var urls = _.pluck(results, "html_url");
-              string = "*Here are some open issues:*\n";
-              for(var i = 0; i < results.length; i++){
-               string += (i + 1) + ". "+ titles[i] + ": ";
-               string += urls[i] + "\n";
-             }
-           }
-           bot.reply(message, string);
-         });
-          bot.startConversation(message, askWhichIssue);
-        // }
+    controller.storage.users.get(message.user, function(err, user) {
+        main.getIssues(repoOwner, repo, user.git_name, "open").then(function(openI) {
+          main.getIssuesClosedByUser(repoOwner, repo, user.git_name).then(function(result) {
+              main.sortAndCompareIssues(result, openI).then(function(matchingR) {
+                // console.log("In sortAndCompareIssues! ");
+                var string;
+          			if(matchingR.length == 0){
+          				string = "No issues to work on for now!";
+          			} else {
+          				var titles = _.pluck(matchingR, "title");
+          				var urls = _.pluck(matchingR, "html_url");
+          				string = "*Here are some open issues:*\n";
+          				for(var i = 0; i < matchingR.length; i++){
+          					string += (i + 1) + ". "+ titles[i] + ": ";
+          					string += urls[i] + "\n";
+          				}
+          			}
+                bot.reply(message, string);
+              });
+          }).catch(function (e){
+                bot.reply(message, e);});
+        }).catch(function (e){
+              bot.reply(message, e);
+      }).catch(function (e){
+            bot.reply(message, e);
       });
-});
-
-// Asks user which issue to work on, where the user must reply with issue number
-askWhichIssue = function(response, convo)
-{
-  convo.ask("What issue number do you want to work on?", function(response, convo){
-    main.assignIssueToUser(currentUser, repoOwner, repo, response.text, currentUser.git_name).then(function(resp){
-      convo.say(resp);
-      convo.next();
+      bot.startConversation(message, function(response, convo){
+        convo.ask("What issue number do you want to work on?", function(response, convo){
+          main.assignIssueToUser(user, repoOwner, repo, response.text, user.git_name).then(function(resp){
+            convo.say(resp);
+            convo.next();
+          });
+        });
+      });
     });
-  });
-}
+});
 
 var deadline_conversation_asking_for_issueNumber = function(response, convo,results,name,message)
 {
@@ -70,8 +68,7 @@ var deadline_conversation_asking_for_issueNumber = function(response, convo,resu
       convo.repeat();
       convo.next();
     });;
-});
-
+  });
 }
 
 
@@ -133,9 +130,21 @@ var deadline_conversation_asking_for_assignment = function(response, convo,name,
    });
 
     });
-  });
+});
 
-  controller.hears(['Help me with issue #(.*)', 'help me with issue #(.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
+controller.hears(['closed issues by (.*)', 'Closed issues by (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
+    var name = message.match[1];
+    controller.storage.users.get(message.user, function(err, user) {
+        main.getIssuesClosedByUser(repoOwner,repo,name).then(function (results)
+        {
+            bot.reply(message, results);
+        }).catch(function (e){
+            bot.reply(message, e+name);
+        });
+      });
+});
+
+controller.hears(['Help me with issue #(.*)', 'help me with issue #(.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
     var number = message.match[1];
     controller.storage.users.get(message.user, function(err, user) {
 
