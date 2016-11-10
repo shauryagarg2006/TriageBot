@@ -11,4 +11,4 @@ In the previous milestone, we described 3 use cases and implemented interaction 
 - Better conversation flow.
 
 ### Use Case 3:
-- We return the list of users that have worked on similar issues to the input issue from the current developer.   
+- We return the list of users that have worked on similar issues to the input issue from the developer that requested for helps.   
