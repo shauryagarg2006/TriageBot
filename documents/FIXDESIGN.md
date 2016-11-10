@@ -25,26 +25,26 @@ TriageBot would best fit into the <a href="http://willschenk.com/bot-design-patt
 
 Below is a simple wireframe of the Slack UI which is where the developer will interact with TriageBot.
 
-<img src="images/botWireframe.png"/>
+<img src="../images/botWireframe.png"/>
 
 #####Storyboard:
 
 - Developers can look for open issues and assign them to themselves. The issues will be linked to the respective Github issues. The developer can ask the bot for open issues to work on. He’d use natural language, and the bot would look for keywords like “issue” or “work”. It then understands that the developer is asking for the open issues that fit his expertise.
 The bot would then list the issues for the developer and wait for a response. The developer would respond with a phrase that indicates which issue he wants to work on. He would say something like, “I want the first one” or “number 1”.
 
-<img src="images/assignToMe.png" width="60%" height="60%"/>
+<img src="../images/assignToMe.png" width="60%" height="60%"/>
 
 - Developers can also assign issues to other developers in the team in case they need help with the work that they're currently working on or wanting to delegate tasks to others. Before they start assigning issues, they can also ask TriageBot the issues that the assignee is currently working on to which the bot will respond with a list of issues assigned to that developer. When the developer requests issues to be assignee, the assignee has an option to review the issues before accepting or rejecting the assignment.
 
-<img src="images/assignToDavid.png"/>
+<img src="../images/assignToDavid.png"/>
 
 - Remembering deadlines can be tough, so TriageBot will also push notifications to the developer with helpful reminders of the deadline for issues. Everyday, the bot will look into the database of issues and based on the milestone of those issues, it can remind the developers at an appropriate time and appropriate frequency.
 
-<img src="images/deadlineReminder.png"/>
+<img src="../images/deadlineReminder.png"/>
 
 - Developers can also ask TriageBot for the deadlines of either their issues or other developers in their team. In this case, the developer would make that request in the Slack chat box and the bot would look for keywords including “deadline” or “timeline” along with the name of the developer or the issue’s ID number. The bot then look into the database on Github to pull the information to respond back to the developer’s request. This helps the developer gauge the issues they need to get done, or what other developers are working on before assigning them issues.
 
-<img src="images/giveMeDeadlines.png"/>
+<img src="../images/giveMeDeadlines.png"/>
 
 ### Architecture Design
 
