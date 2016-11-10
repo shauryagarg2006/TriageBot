@@ -7,9 +7,9 @@ var stringSimilarity = require('string-similarity');
 var github = require("./github.js");
 
 var MAX_LABEL = 4;
-var LABEL_WEIGHT = 0.05;
-var TITLE_WEIGHT = 0.5;
-var DESC_WEIGHT = 0.3;
+var LABEL_WEIGHT = 0.15;
+var TITLE_WEIGHT = 0.2;
+var DESC_WEIGHT = 0.2;
 
 // Return open/closed issues in a user's repo
 function getIssues(user, repo, state)
@@ -79,9 +79,7 @@ function sortAndCompareIssues(issuesA, issuesB)
 						descScore = stringSimilarity.compareTwoStrings(issuesB[i].body, issuesA[j].body);
 						score += descScore*DESC_WEIGHT;
 						// console.log("desc score "+descScore);
-					} else if(issuesA[j].body.length == 0 && issuesB[i].body.length == 0){
-						score += DESC_WEIGHT;
-					}
+					} 	
 					if(maxScore < score)
 					{
 						maxScore = score;
@@ -90,8 +88,8 @@ function sortAndCompareIssues(issuesA, issuesB)
 				}
 				issueScore.push(maxScore);
 			}
-			// console.log("sorted "+issueScore);
 			// Sort the issuesB and return
+			console.log(issueScore)
 			var maxArray = []; // used to exclude the previous max for _.max below
 			while(maxArray.length < issueScore.length)
 			{
@@ -106,6 +104,7 @@ function sortAndCompareIssues(issuesA, issuesB)
 				// add the title of the issue that has the next max score
 				issuesRtn.push(issuesB[issueScore.indexOf(max)]);
 			}
+			
 			if(issuesRtn.length >= 5){
 				resolve(issuesRtn.splice(0, 5));
 			} else {
@@ -232,6 +231,7 @@ function getFreeDevelopers(owner, repo, number)
 				myissue = []
 				myissue.push(issue)
 				sortAndCompareIssues(myissue, issues).then(function(matching_issues){
+					console.log(_.pluck(matching_issues,'number'))
 					var result =[];
 					myissuedl = [];
 					if(!matching_issues.length){
@@ -241,8 +241,14 @@ function getFreeDevelopers(owner, repo, number)
 						for(i=0;i < issue.assignees.length;i++){
 							myissuedl.push(issue.assignees[i].login);
 					}
-					for(i = 0;i < matching_issues[matching_issues.length - 1].assignees.length;i++){
-						result.push(matching_issues[matching_issues.length - 1].assignees[i].login);
+					for(i = 0;i < matching_issues.length;i++)
+					{
+						for(j = 0;j < matching_issues[i].assignees.length;j++)
+						{
+							if(result.indexOf(matching_issues[i].assignees[j].login) == -1){
+								result.push(matching_issues[i].assignees[j].login)
+							}
+						}
 					}
 					result = _.difference(result, myissuedl);
 					if(!result.length){
@@ -255,7 +261,6 @@ function getFreeDevelopers(owner, repo, number)
 		});
 	});
 }
-
 
 exports.getIssuesAssigedToAuser = getIssuesAssigedToAuser;
 exports.getIssuesClosedByUser = getIssuesClosedByUser;
