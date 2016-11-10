@@ -16,7 +16,7 @@ The first three use cases of our Developer Triage Bot are described in the [Tria
 
 ### Service 
 
-The details about our updates of this milestone is included in the [SERVICE Document](documents/SERVICE.md)
+The details about our updates of this milestone is included in the [SERVICE Document](documents/SERVICE.md).
 
 ### Screencast Demo
 
