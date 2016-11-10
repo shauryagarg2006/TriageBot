@@ -248,7 +248,7 @@ function getIssuesClosedByUser(owner,repo,userName)
 				return false;
 			});
 			if(!issuesForAssignee.length){
-				reject("No closed issues found for ");
+				reject("No closed issues found for " + userName);
 			}
 			resolve(issuesForAssignee);
 		});
