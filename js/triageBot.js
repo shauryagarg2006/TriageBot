@@ -20,47 +20,47 @@ var bot = controller.spawn({
 
 controller.hears(['give me issues'], 'direct_message, direct_mention, mention', function(bot, message) {
 
-    controller.storage.users.get(message.user, function(err, user) {
-        main.getIssues(repoOwner, repo, user.git_name, "open").then(function(openI) {
-          if(openI.length == 0){
-            var str = "No issues to work on for now!";
-            bot.reply(message, str);
-          } else {
-            main.getIssuesClosedByUser(repoOwner, repo, user.git_name).then(function(result) {
-                main.sortAndCompareIssues(result, openI).then(function(matchingR) {
+  controller.storage.users.get(message.user, function(err, user) {
+    main.getIssues(repoOwner, repo, user.git_name, "open").then(function(openI) {
+      if(openI.length == 0){
+        var str = "No issues to work on for now!";
+        bot.reply(message, str);
+      } else {
+        main.getIssuesClosedByUser(repoOwner, repo, user.git_name).then(function(result) {
+          main.sortAndCompareIssues(result, openI).then(function(matchingR) {
                   // console.log("In sortAndCompareIssues! ");
                   var string;
-            			if(matchingR.length == 0){
-            				string = "No issues to work on for now!";
-            			} else {
-            				var titles = _.pluck(matchingR, "title");
-            				var urls = _.pluck(matchingR, "html_url");
-            				string = "*Here are some open issues:*\n";
-            				for(var i = 0; i < matchingR.length; i++){
-            					string += (i + 1) + ". "+ titles[i] + ": ";
-            					string += urls[i] + "\n";
-            				}
-            			}
-                  bot.reply(message, string);
+                  if(matchingR.length == 0){
+                    string = "No issues to work on for now!";
+                  } else {
+                    var titles = _.pluck(matchingR, "title");
+                    var urls = _.pluck(matchingR, "html_url");
+                    string = "*Here are some open issues:*\n";
+                    for(var i = 0; i < matchingR.length; i++){
+                     string += (i + 1) + ". "+ titles[i] + ": ";
+                     string += urls[i] + "\n";
+                   }
+                 }
+                 bot.reply(message, string);
 
-                  bot.startConversation(message, function(response, convo){
-                    convo.ask("What issue number do you want to work on?", function(response, convo){
-                      main.assignIssueToUser(user, repoOwner, repo, response.text, user.git_name).then(function(resp){
-                        convo.say(resp);
-                        convo.next();
-                      });
+                 bot.startConversation(message, function(response, convo){
+                  convo.ask("What issue number do you want to work on?", function(response, convo){
+                    main.assignIssueToUser(user, repoOwner, repo, response.text, user.git_name).then(function(resp){
+                      convo.say(resp);
+                      convo.next();
                     });
                   });
                 });
-            }).catch(function (e){
-                  bot.reply(message, e);});
-        }}).catch(function (e){
-              bot.reply(message, e);
-      }).catch(function (e){
-            bot.reply(message, e);
-      });
+               });
+}).catch(function (e){
+  bot.reply(message, e);});
+}}).catch(function (e){
+  bot.reply(message, e);
+}).catch(function (e){
+  bot.reply(message, e);
+});
 
-    });
+});
 });
 
 var deadline_conversation_asking_for_issueNumber = function(response, convo,results,name,message)
@@ -71,10 +71,10 @@ var deadline_conversation_asking_for_issueNumber = function(response, convo,resu
     convo.next();
   }).catch(function (e){
     bot.reply(message,"Invalid response!");
-      convo.repeat();
-      convo.next();
-    });;
-  });
+    convo.repeat();
+    convo.next();
+  });;
+});
 }
 
 
@@ -83,9 +83,9 @@ var deadline_conversation_asking_for_assignment = function(response, convo,name,
   main.getOpenIssuesForDeadlines(repoOwner,repo).then(function (results)
   {
     var result =[];
-      for(i=0;i<results.length;i++){
-        result.push(i+1+" ) "+results[i].title);
-        result.push(results[i].html_url);
+    for(i=0;i<results.length;i++){
+      result.push(i+1+" ) "+results[i].title);
+      result.push(results[i].html_url);
         //result.push('Deadline- '+results[i].milestone.due_on);
         result.push('\n');
       }
@@ -124,33 +124,39 @@ var deadline_conversation_asking_for_assignment = function(response, convo,name,
   controller.hears(['deadlines for (.*)', 'Deadline for (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
     var name = message.match[1];
     controller.storage.users.get(message.user, function(err, user) {
-      main.getIssuesAssigedToAuser(repoOwner,repo,name).then(function (results)
+
+      main.isValidUser(name).then(function (validUserName){
+       main.getIssuesAssigedToAuser(repoOwner,repo,name).then(function (results)
+       {
+        bot.reply(message, results);
+      }).catch(function (e){
+        bot.startConversation(message, function(err,convo){
+          deadline_conversation_asking_for_assignment(err,convo,name,message);
+
+        });
+
+      });
+    }).catch(function (e){
+      bot.reply(message,"Sorry, " +name +" is not a valid user!");
+    });
+
+
+    });
+  });
+
+  controller.hears(['closed issues by (.*)', 'Closed issues by (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
+    var name = message.match[1];
+    controller.storage.users.get(message.user, function(err, user) {
+      main.getIssuesClosedByUser(repoOwner,repo,name).then(function (results)
       {
         bot.reply(message, results);
       }).catch(function (e){
-      bot.startConversation(message, function(err,convo){
-      deadline_conversation_asking_for_assignment(err,convo,name,message);
-
-    });
-
-   });
-
-    });
-});
-
-controller.hears(['closed issues by (.*)', 'Closed issues by (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
-    var name = message.match[1];
-    controller.storage.users.get(message.user, function(err, user) {
-        main.getIssuesClosedByUser(repoOwner,repo,name).then(function (results)
-        {
-            bot.reply(message, results);
-        }).catch(function (e){
-            bot.reply(message, e+name);
-        });
+        bot.reply(message, e+name);
       });
-});
+    });
+  });
 
-controller.hears(['Help me with issue #(.*)', 'help me with issue #(.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
+  controller.hears(['Help me with issue #(.*)', 'help me with issue #(.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
     var number = message.match[1];
     controller.storage.users.get(message.user, function(err, user) {
 
